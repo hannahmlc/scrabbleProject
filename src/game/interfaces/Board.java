@@ -1,6 +1,6 @@
 package game.interfaces;
 
-import game.Tile;
+import game.Letters;
 
 public interface Board {
 
@@ -10,7 +10,7 @@ public interface Board {
      * @param y - diagonal index on board
      * @param tile - tile to place
      */
-    public void placeTile(int x, int y, Tile tile);
+    public void placeTile(int x, int y, Letters tile);
 
     /**
      * Creates a deep copy of board

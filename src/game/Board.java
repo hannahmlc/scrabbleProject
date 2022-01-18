@@ -3,14 +3,14 @@ package game;
 public class Board implements game.interfaces.Board {
 
     public static final int DIM =15; // board dimension
-    private Tile[][] tiles;
+    private Letters[][] tiles;
 
     /**
      * creates a new, empty baord
      * @ensures all fields are EMPTY
      */
     public Board(){
-        this.tiles = new Tile[DIM][DIM];
+        this.tiles = new Letters[DIM][DIM];
         reset();
     }
 
@@ -21,8 +21,8 @@ public class Board implements game.interfaces.Board {
      * @param tile - tile to place
      */
     @Override
-    public void placeTile(int x, int y, Tile tile) {
-        if (tiles[x][y]==Tile.EMPTY){
+    public void placeTile(int x, int y, Letters tile) {
+        if (tiles[x][y]== Letters.EMPTY){
             tiles[x][y] = tile;
         } else{
             System.out.println("Place taken");
@@ -47,14 +47,13 @@ public class Board implements game.interfaces.Board {
 
     /**
      * Empties all fields of this board
-     *
      * @ensures all fields are EMPTY
      */
     @Override
     public void reset() {
         for (int i=0;i<DIM;i++){
             for (int j=0;i<DIM;j++){
-                placeTile(i,j,Tile.EMPTY);
+                placeTile(i,j, Letters.EMPTY);
             }
         }
     }
@@ -67,6 +66,5 @@ public class Board implements game.interfaces.Board {
     public String printBoard() {
         return null;
     }
-
 
 }

@@ -1,5 +1,5 @@
 package game;
-import WordChecker.java.*;
+//import WordChecker.java.*;
 
 
 
