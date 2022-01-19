@@ -12,6 +12,13 @@ public interface Board {
      */
     public void placeTile(int x, int y, Letters tile);
 
+
+    public Letters getField(int x, int y);
+    public Letters getFieldUp(int x, int y);
+    public Letters getFieldDown(int x, int y);
+    public Letters getFieldLeft(int x, int y);
+    public Letters getFieldRight(int x, int y);
+
     /**
      * Creates a deep copy of board
      * @ensures the result is a new object, so not this object

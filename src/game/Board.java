@@ -14,6 +14,7 @@ public class Board implements game.interfaces.Board {
         reset();
     }
 
+// --Board/Tiles related methods-----------------------------------------------
     /**
      * places the tile on board
      * @param x - horizontal index on board
@@ -28,6 +29,33 @@ public class Board implements game.interfaces.Board {
             System.out.println("Place taken");
         }
     }
+
+    //TODO: make sure get fild up/down etc arent out of bounds
+    @Override
+    public Letters getField(int x, int y) {
+        return tiles[x][y];
+    }
+
+    @Override
+    public Letters getFieldUp(int x, int y) {
+        return tiles[x+1][y];
+    }
+
+    @Override
+    public Letters getFieldDown(int x, int y) {
+        return tiles[x-1][y];
+    }
+
+    @Override
+    public Letters getFieldLeft(int x, int y) {
+        return tiles[x][y+1];
+    }
+
+    @Override
+    public Letters getFieldRight(int x, int y) {
+        return tiles[x][y-1];
+    }
+
 
     /**
      * Creates a deep copy of board
@@ -66,5 +94,10 @@ public class Board implements game.interfaces.Board {
     public String printBoard() {
         return null;
     }
+
+
+// --Board/Game related methods-----------------------------------------------
+
+
 
 }
