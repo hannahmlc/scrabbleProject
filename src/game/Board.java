@@ -6,7 +6,7 @@ public class Board implements game.interfaces.Board {
     private Letters[][] tiles;
 
     /**
-     * creates a new, empty baord
+     * creates a new, empty board
      * @ensures all fields are EMPTY
      */
     public Board(){
@@ -30,7 +30,7 @@ public class Board implements game.interfaces.Board {
         }
     }
 
-    //TODO: make sure get fild up/down etc arent out of bounds
+    //TODO: make sure get field up/down etc arent out of bounds
     @Override
     public Letters getField(int x, int y) {
         return tiles[x][y];
@@ -80,7 +80,7 @@ public class Board implements game.interfaces.Board {
     @Override
     public void reset() {
         for (int i=0;i<DIM;i++){
-            for (int j=0;i<DIM;j++){
+            for (int j=0;j<DIM;j++){
                 placeTile(i,j, Letters.EMPTY);
             }
         }
