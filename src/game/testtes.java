@@ -3,14 +3,17 @@ package game;
 
 
 
-public class testtes {/*
-    public static void main(String[] args) {
-        String word = "dog";
-        testtes test = new testtes();
-        test.Print("dog");
-    }
+public class testtes {
 
+        //TODO: delete this:
+        public static void main(String[] args) {
+            Board board = new Board();
+            //System.out.println(BaordPrint.addLine());
+            board.placeTile(0,1,Letters.A);
+            System.out.println(board.printBoard());
+        }
 
+/*
     public boolean isWord(String word){
         FileStreamScrabbleWordChecker checker = new FileStreamScrabbleWordChecker();
         ScrabbleWordChecker.WordResponse response = checker.isValidWord(word);

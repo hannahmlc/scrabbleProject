@@ -1,6 +1,8 @@
 package game.interfaces;
 
+import game.FieldType;
 import game.Letters;
+import game.FieldType;
 
 public interface Board {
 
@@ -9,9 +11,17 @@ public interface Board {
      * @param x - horizontal index on board
      * @param y - diagonal index on board
      * @param tile - tile to place
+     * @ensures no tile is put on occupied place during game
      */
     public void placeTile(int x, int y, Letters tile);
 
+    /**
+     * set the tile on board
+     * @param x - horizontal index on board
+     * @param y - diagonal index on board
+     * @param tile - tile to place
+     */
+    public void setTile(int x, int y, Letters tile);
 
     public Letters getField(int x, int y);
     public Letters getFieldUp(int x, int y);
@@ -39,5 +49,9 @@ public interface Board {
      */
     public String printBoard();
 
+    /**
+     * @return special places on board
+     */
+    public FieldType specialFiled(int x, int z);
 
 }

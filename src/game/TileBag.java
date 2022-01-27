@@ -1,4 +1,4 @@
-package game.interfaces;
+package game;
 
 import game.Letters;
 import game.Tile;
@@ -9,7 +9,7 @@ public class TileBag {
     List<Tile> bag = new ArrayList<>(100);
 
 
-      public List<Tile> generateTiles(){
+      public static List<Tile> generateTiles(){
           List<Tile> bag = new ArrayList<>(100);
           Tile A = new Tile(Letters.A,1 );
           Tile B = new Tile(Letters.B,3 );
@@ -66,7 +66,6 @@ public class TileBag {
           bag.add(Y);
           bag.add(Z);
           bag.add(BLANK);
-
           return bag;
       }
 
@@ -74,7 +73,6 @@ public class TileBag {
 
 
       private static class tileQuantity{
-
       }
 
 

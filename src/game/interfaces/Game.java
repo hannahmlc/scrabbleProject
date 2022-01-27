@@ -1,5 +1,8 @@
 package game.interfaces;
 
+import game.Letters;
+import java.util.List;
+
 public interface Game {
 
     /**
@@ -8,4 +11,9 @@ public interface Game {
      * @ensures word exists
      */
     public boolean isValidWord();
+
+    /**
+     * add letters to player rack
+     */
+    public List<Letters> generateRack();
 }
