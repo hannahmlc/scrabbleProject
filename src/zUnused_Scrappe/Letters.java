@@ -1,4 +1,4 @@
-package game;
+package zUnused_Scrappe;
 
 public enum Letters {
     EMPTY,

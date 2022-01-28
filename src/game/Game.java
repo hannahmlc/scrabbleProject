@@ -6,7 +6,6 @@ import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game implements game.interfaces.Game {
 

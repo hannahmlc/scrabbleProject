@@ -31,7 +31,7 @@ public class Scrabble {
 
         List<Tile> bagOfTiles = TileBag.generateTiles();
 
-        //System.out.println(bagOfTiles.size() + "    " + bagOfTiles.get(0).getLetter());
+        //System.out.println(bagOfTiles.size() + "    " + bagOfTiles.get(100).getLetter());
 
         Game game = new Game (player1, player2, bagOfTiles);
         game.start();

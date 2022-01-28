@@ -1,7 +1,5 @@
 package game;
 
-import game.Letters;
-import game.Tile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +53,6 @@ public class TileBag {
           bag.add(C);
           bag.add(C);//2xC
 
-          bag.add(D);
           bag.add(D);
           bag.add(D);
           bag.add(D);
@@ -169,12 +166,7 @@ public class TileBag {
           return bag;
       }
 
-
-
-
-      private static class tileQuantity{
-      }
-
+      //private static class tileQuantity{}
 
 }
 //    The following tiles are in the game:

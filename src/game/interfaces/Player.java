@@ -1,6 +1,5 @@
 package game.interfaces;
 
-import game.Letters;
 import game.Tile;
 import java.util.List;
 
