@@ -6,6 +6,7 @@ import utils.LetterToPosition;
 
 public class testtes {
 
+    //TODO: score generaiton
         //TODO: delete this:
         public static void main(String[] args) {
             Board board = new Board();

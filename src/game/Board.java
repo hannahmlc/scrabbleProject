@@ -1,5 +1,6 @@
 package game;
 import game.BoardView.boardPrint;
+import game.exceptions.InvalidInputException;
 
 public class Board implements game.interfaces.Board {
 
@@ -107,7 +108,7 @@ public class Board implements game.interfaces.Board {
      */
     @Override
     public String printBoard() {
-        return boardPrint.formatBoard(this);
+        return boardFormat.formatBoard(this);
     }
 
     /**
@@ -125,7 +126,7 @@ public class Board implements game.interfaces.Board {
          else if ((x== 5 && y==1) || (x== 9 && y==1) ||
         (x== 1 && y==5) || (x== 5 && y==5) || (x== 9 && y==5) || (x== 13 && y==5) ||
         (x== 1 && y==9) || (x== 5 && y==9) || (x== 9 && y==9) || (x== 13 && y==9) ||
-        (x== 5 && y==13) || (x== 9 && y==13) ) return FieldType.TRIPLE_L;//tripple letter
+        (x== 5 && y==13) || (x== 9 && y==13) ) return FieldType.TRIPLE_L;//triple letter
 
        else if ( (x== 0 && y==3) || (x== 0 && y==11) ||
         (x== 2 && y==6) || (x== 2 && y==8) ||
@@ -151,51 +152,55 @@ public class Board implements game.interfaces.Board {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param x - index
+     * @param y - index
      */
     @Override
     public boolean isField(int x, int y) {
-        if (x>=DIM || y>=DIM) return false;
-
-        return true;
+        return x < DIM && y < DIM;
     }
 
     @Override
     public boolean isEmptyField(int x, int y) {
-        if(getField(x, y) == null) return true;
-            return false;
+        return getField(x, y) == null;
     }
 
     /**
      * @param x       - index
      * @param y       - index
-     * @param letters - letters to be placed
-     *                places word on board horizontally
-     * @requires place wher the word will be put, is empty
+     * @param letters - letters to be placed on board horizontally
+     * @requires place where the word will be put, is empty
      * @ensures
      */
     @Override
-    public void placeHorizontally(int x, int y, char[] letters) {
-
+    public void placeHorizontally(int x, int y, char[] letters) throws InvalidInputException {
+            for(int i=0;i<letters.length;i++){
+                String letter = String.valueOf(letters[i]);
+                if (getField(x,y)!=null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
+                    else throw new InvalidInputException();
+                    y++;
+            }
     }
 
     /**
      * @param x       - index
      * @param y       - index
-     * @param letters - letters to be placed
-     *                places word on board horizontally
-     * @requires place wher the word will be put, is empty
+     * @param letters - letters to be placed on board vertically
+     * @requires place where the word will be put, is empty
      */
     @Override
-    public void placeVertically(int x, int y, char[] letters) {
-
+    public void placeVertically(int x, int y, char[] letters) throws InvalidInputException {
+        for(int i=0;i<letters.length;i++){
+            String letter = String.valueOf(letters[i]);
+            if (getField(x,y)!=null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
+            else throw new InvalidInputException();
+            x++;
+        }
     }
 
     /**
      * Check if created word exist in dictionary
-     *
-     * @param word
+     * @param word - word to be checked
      * @return true if word exist
      * @ensures word exists
      */

@@ -1,7 +1,7 @@
 package game.interfaces;
 
 import game.FieldType;
-import game.FieldType;
+import game.exceptions.InvalidInputException;
 
 public interface Board {
 
@@ -57,35 +57,33 @@ public interface Board {
 
     /**
      * checks whatever index are part of board
-     * @ensures choosen field isnt out of bounds
+     * @ensures chosen field isn't out of bounds
      */
     boolean isField(int x, int y);
 
     /**
      * checks whatever place on board is empty
      * @param x, y - indexes\
-     * @ensures choosend field is empty
+     * @ensures chosen field is empty
      */
     boolean isEmptyField(int x, int y);
 
     /**
      * @param x - index
      * @param y - index
-     * @param letters - letters to be placed
-     * places word on board horizontally
-     * @requires place wher the word will be put, is empty
+     * @param letters - letters to be placed on board horizontally
+     * @requires place where the word will be put, is empty
      * @ensures
      */
-    public void placeHorizontally(int x, int y, char[] letters);
+    public void placeHorizontally(int x, int y, char[] letters) throws InvalidInputException;
 
     /**
      * @param x - index
      * @param y - index
-     * @param letters - letters to be placed
-     * places word on board horizontally
-     * @requires place wher the word will be put, is empty
+     * @param letters - letters to be placed on board vertically
+     * @requires place where the word will be put, is empty
      */
-    public void placeVertically(int x, int y, char[] letters);
+    public void placeVertically(int x, int y, char[] letters) throws InvalidInputException;
 
     /**
      * Check if created word exist in dictionary
