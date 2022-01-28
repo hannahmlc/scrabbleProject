@@ -4,7 +4,7 @@ import game.BoardView.boardPrint;
 public class Board implements game.interfaces.Board {
 
     public static final int DIM =15; // board dimension
-    private Letters[][] tiles;
+    private String[][] tiles;
 
     private final boardPrint boardFormat = new boardPrint();
 
@@ -13,11 +13,11 @@ public class Board implements game.interfaces.Board {
      * @ensures all fields are EMPTY
      */
     public Board(){
-        this.tiles = new Letters[DIM][DIM];
+        this.tiles = new String[DIM][DIM];
         reset();
     }
 
-// --Board/Tiles related methods-----------------------------------------------
+
     /**
      * places the tile on board
      * @param x - horizontal index on board
@@ -26,8 +26,8 @@ public class Board implements game.interfaces.Board {
      * @ensures no tile is put on occupied place during game
      */
     @Override
-    public void placeTile(int x, int y, Letters tile) {
-        if (tiles[x][y]== Letters.EMPTY){
+    public void placeTile(int x, int y, String tile) {
+        if (tiles[x][y]== null){
             tiles[x][y] = tile;
         } else{
             System.out.println("Place taken");
@@ -38,36 +38,36 @@ public class Board implements game.interfaces.Board {
      * set the tile on board
      * @param x    - horizontal index on board
      * @param y    - diagonal index on board
-     * @param tile - tile to place
+     * @param letter - tile to place
      */
     @Override
-    public void setTile(int x, int y, Letters tile) {
-        tiles[x][y] = tile;
+    public void setTile(int x, int y, String letter) {
+        tiles[x][y] = letter;
     }
 
     //TODO: make sure get field up/down etc arent out of bounds
     @Override
-    public Letters getField(int x, int y) {
+    public String getField(int x, int y) {
         return tiles[x][y];
     }
 
     @Override
-    public Letters getFieldUp(int x, int y) {
+    public String getFieldUp(int x, int y) {
         return tiles[x+1][y];
     }
 
     @Override
-    public Letters getFieldDown(int x, int y) {
+    public String getFieldDown(int x, int y) {
         return tiles[x-1][y];
     }
 
     @Override
-    public Letters getFieldLeft(int x, int y) {
+    public String getFieldLeft(int x, int y) {
         return tiles[x][y+1];
     }
 
     @Override
-    public Letters getFieldRight(int x, int y) {
+    public String getFieldRight(int x, int y) {
         return tiles[x][y-1];
     }
 
@@ -96,7 +96,7 @@ public class Board implements game.interfaces.Board {
     public void reset() {
         for (int i=0;i<DIM;i++){
             for (int j=0;j<DIM;j++){
-                setTile(i,j, Letters.EMPTY);
+                setTile(i,j, null);
             }
         }
     }
@@ -139,9 +139,69 @@ public class Board implements game.interfaces.Board {
         else return FieldType.NORMAL;
     }
 
+    @Override
+    public boolean isFull() {
+        for (int i = 0; i < DIM; i++) {
+            for (int j = 0; j < DIM; j++) {
+                if (getField(i,j) == null) {
+                    return false;
+                }
+            }
+        }return true;
+    }
 
-// --Board/Game related methods-----------------------------------------------
+    /**
+     * @param x
+     * @param y
+     */
+    @Override
+    public boolean isField(int x, int y) {
+        if (x>=DIM || y>=DIM) return false;
 
+        return true;
+    }
 
+    @Override
+    public boolean isEmptyField(int x, int y) {
+        if(getField(x, y) == null) return true;
+            return false;
+    }
+
+    /**
+     * @param x       - index
+     * @param y       - index
+     * @param letters - letters to be placed
+     *                places word on board horizontally
+     * @requires place wher the word will be put, is empty
+     * @ensures
+     */
+    @Override
+    public void placeHorizontally(int x, int y, char[] letters) {
+
+    }
+
+    /**
+     * @param x       - index
+     * @param y       - index
+     * @param letters - letters to be placed
+     *                places word on board horizontally
+     * @requires place wher the word will be put, is empty
+     */
+    @Override
+    public void placeVertically(int x, int y, char[] letters) {
+
+    }
+
+    /**
+     * Check if created word exist in dictionary
+     *
+     * @param word
+     * @return true if word exist
+     * @ensures word exists
+     */
+    @Override
+    public boolean isValidWord(String word) {
+        return false;
+    }
 
 }

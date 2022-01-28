@@ -1,6 +1,12 @@
 package game;
 
+import game.exceptions.InvalidDirectionException;
+import game.exceptions.InvalidIndexException;
+import game.exceptions.InvalidInputException;
+import game.exceptions.InvalidWordException;
 import java.util.List;
+import java.util.Scanner;
+
 
 public class Player implements game.interfaces.Player {
 
@@ -40,5 +46,11 @@ public class Player implements game.interfaces.Player {
     @Override
     public String getName() {
         return this.username;
+    }
+
+    public Board playerMove(Board board)
+        throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+        Move.makeMove(board, this);
+        return board;
     }
 }

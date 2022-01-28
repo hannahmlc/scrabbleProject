@@ -2,16 +2,16 @@ package game;
 
 public class Tile {
 
-    private Letters letter;
+    private String letter;
     private int Points;
 
-    public Tile(Letters letters, int points){
-        this.letter = letters;
+    public Tile(String letter, int points){
+        this.letter = letter;
         this.Points = points;
     }
 
     //get letter of tile
-    public Letters getLetter(){
+    public String getLetter(){
         return letter;
     }
 

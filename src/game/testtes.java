@@ -2,6 +2,7 @@ package game;
 //import WordChecker.java.*;
 
 
+import utils.LetterToPosition;
 
 public class testtes {
 
@@ -9,8 +10,10 @@ public class testtes {
         public static void main(String[] args) {
             Board board = new Board();
             //System.out.println(BaordPrint.addLine());
-            board.placeTile(0,1,Letters.A);
+            board.placeTile(0,1,"A");
             System.out.println(board.printBoard());
+            int b = LetterToPosition.getYfromLetter('B');
+            System.out.println(b);
         }
 
 /*

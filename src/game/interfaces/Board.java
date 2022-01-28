@@ -1,7 +1,6 @@
 package game.interfaces;
 
 import game.FieldType;
-import game.Letters;
 import game.FieldType;
 
 public interface Board {
@@ -13,7 +12,7 @@ public interface Board {
      * @param tile - tile to place
      * @ensures no tile is put on occupied place during game
      */
-    public void placeTile(int x, int y, Letters tile);
+    public void placeTile(int x, int y, String tile);
 
     /**
      * set the tile on board
@@ -21,13 +20,13 @@ public interface Board {
      * @param y - diagonal index on board
      * @param tile - tile to place
      */
-    public void setTile(int x, int y, Letters tile);
+    public void setTile(int x, int y, String tile);
 
-    public Letters getField(int x, int y);
-    public Letters getFieldUp(int x, int y);
-    public Letters getFieldDown(int x, int y);
-    public Letters getFieldLeft(int x, int y);
-    public Letters getFieldRight(int x, int y);
+    public String getField(int x, int y);
+    public String getFieldUp(int x, int y);
+    public String getFieldDown(int x, int y);
+    public String getFieldLeft(int x, int y);
+    public String getFieldRight(int x, int y);
 
     /**
      * Creates a deep copy of board
@@ -54,4 +53,44 @@ public interface Board {
      */
     public FieldType specialFiled(int x, int z);
 
+    public boolean isFull();
+
+    /**
+     * checks whatever index are part of board
+     * @ensures choosen field isnt out of bounds
+     */
+    boolean isField(int x, int y);
+
+    /**
+     * checks whatever place on board is empty
+     * @param x, y - indexes\
+     * @ensures choosend field is empty
+     */
+    boolean isEmptyField(int x, int y);
+
+    /**
+     * @param x - index
+     * @param y - index
+     * @param letters - letters to be placed
+     * places word on board horizontally
+     * @requires place wher the word will be put, is empty
+     * @ensures
+     */
+    public void placeHorizontally(int x, int y, char[] letters);
+
+    /**
+     * @param x - index
+     * @param y - index
+     * @param letters - letters to be placed
+     * places word on board horizontally
+     * @requires place wher the word will be put, is empty
+     */
+    public void placeVertically(int x, int y, char[] letters);
+
+    /**
+     * Check if created word exist in dictionary
+     * @return true if word exist
+     * @ensures word exists
+     */
+    public boolean isValidWord(String word);
 }
