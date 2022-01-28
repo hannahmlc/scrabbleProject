@@ -35,6 +35,16 @@ public class Player implements game.interfaces.Player {
     }
 
     @Override
+    public void printRack(List<Tile> rack) {
+        String rackString = "";
+        for (int i=0; i< rack.size(); i++){
+            Tile tile = rack.get(i);
+            rackString += tile.getLetter();
+        }
+        System.out.println(rackString);
+    }
+
+    @Override
     public int getScore() {
         return this.score;
     }

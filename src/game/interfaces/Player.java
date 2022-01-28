@@ -9,9 +9,13 @@ public interface Player {
 
     public List<Tile> getRack();
 
+    public void printRack(List<Tile> rack);
+
     public int getScore();
 
     public void addPoints(int points);
 
     public String getName();
+
+
 }

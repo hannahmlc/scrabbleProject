@@ -14,10 +14,14 @@ public class testtes {
         public static void main(String[] args) {
             Board board = new Board();
             //System.out.println(BaordPrint.addLine());
-            board.placeTile(0,1,"A");
+            board.placeTile(7,7,"A");
+            /*
+            for (int i=0;i<14;i++)
+                for (int j=0;j<14;j++)
+                    board.placeTile(i,j,"A");*/
             board.printBoard();
             int b = LetterToPosition.getYfromLetter('B');
-            System.out.println(b);
+            //System.out.println(b);
         }
 
 /*

@@ -17,32 +17,55 @@ public class boardPrint {
             if (x>DIM+1){
                 z = x-15;
             }
+            if (z<10)boardString = boardString + "   " + z +  "   |  ";
+                else boardString = boardString + "   " + z +  "  |  ";
+            //boardString = boardString + "   " + z +  "  |  ";
 
-            boardString = boardString + "  " + z +  " | ";
             //square tiles generation
             for (int y = 0; y < DIM; y++)
             {
                 FieldType field = board.specialFiled(x,y);
                 switch (field){
                     case CENTER: // pale red  (same as double_w)
-                        boardString = boardString + (ANSI.BLACK_BOLD + ANSI.PURPLE_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + " | ";
-                        break;
                     case DOUBLE_W: // pale red
-                        boardString = boardString + (ANSI.BLACK_BOLD + ANSI.PURPLE_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + " | ";
+                        if(board.getField(x,y)==null){
+                            boardString = boardString + (ANSI.BLACK_BOLD + ANSI.PURPLE_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + "  | ";
+                        }else {
+                            boardString = boardString  +( ANSI.WHITE_BACKGROUND_BRIGHT +ANSI.BLACK_BOLD + "  "+ board.getField(x, y))  + "  "+ANSI.RESET+" | ";
+                        }
                         break;
                     case TRIPLE_W: // red
-                        boardString = boardString + (ANSI.BLACK_BOLD + ANSI.RED_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + " | ";
+                        if (board.getField(x,y)==null){
+                            boardString = boardString + (ANSI.BLACK_BOLD + ANSI.RED_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + "  | ";
+                        }else{
+                            boardString = boardString  +( ANSI.WHITE_BACKGROUND_BRIGHT +ANSI.BLACK_BOLD + "  "+ board.getField(x, y))  + "  "+ANSI.RESET+" | ";
+                        }
                         break;
                     case DOUBLE_L: //pale blue
-                        boardString = boardString + (ANSI.BLACK_BOLD + ANSI.CYAN_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + " | ";
+                        if(board.getField(x,y)==null){
+                            boardString = boardString + (ANSI.BLACK_BOLD + ANSI.CYAN_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + "  | ";
+                        }else{
+                            boardString = boardString  +( ANSI.WHITE_BACKGROUND_BRIGHT +ANSI.BLACK_BOLD + "  "+ board.getField(x, y))  + "  "+ANSI.RESET+" | ";
+                        }
                         break;
                     case TRIPLE_L: //dark blue
-                        boardString = boardString + (ANSI.BLACK_BOLD + ANSI.BLUE_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + " | ";
+                        if(board.getField(x,y)==null){
+                            boardString = boardString + (ANSI.BLACK_BOLD + ANSI.BLUE_BACKGROUND + board.getField(x, y) + ANSI.RESET ) + "  | ";
+                        }else{
+                            boardString = boardString  +( ANSI.WHITE_BACKGROUND_BRIGHT +ANSI.BLACK_BOLD + "  "+ board.getField(x, y))  + "  "+ANSI.RESET+" | ";
+                        }
+
                         break;
                     case NORMAL:// default
-                        boardString = boardString + board.getField(x, y) + " | ";
+                        if(board.getField(x,y)==null){
+                            boardString = boardString + board.getField(x, y) + "  | ";
+                        }else{
+                            boardString = boardString  +( ANSI.WHITE_BACKGROUND_BRIGHT +ANSI.BLACK_BOLD + "  "+ board.getField(x, y))  + "  "+ANSI.RESET+" | ";
+                        }
                         break;
                 }
+
+
                 //boardString = boardString + board.getField(x, y) + " | "; // default
 
 
@@ -66,9 +89,9 @@ public class boardPrint {
 
     //top frame
     public static String topFrame() {
-        String line = "     |";
+        String line = "        |";
         for(int i = 0; i < DIM;i++) {
-            line = line + "  "+ (letterArray(i)) + "    |";
+            line = line + "   "+ (letterArray(i)) + "   |";
         }
         line = line + " \n";
         return line;
@@ -76,9 +99,9 @@ public class boardPrint {
 
     //bottom frame (letters)
     public static String bottomFrame() {
-        String line = "     |";
+        String line = "       |";
         for(int i = 0; i < DIM;i++) {
-            line = line + "   "+ (letterArray(i)) + "  |";
+            line = line + "   "+ (letterArray(i)) + "   |";
         }
         line = line + " \n";
         return line;

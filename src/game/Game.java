@@ -38,7 +38,7 @@ public class Game implements game.interfaces.Game {
     public void play()
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         currentPlayer = (int)(Math.random() * 1);
-        board.printBoard();
+        //board.printBoard();
         while (!gameOver()){
             currentPlayer = currentPlayer % 2; // player can only be 1(index 0) or 2 (index 1)
             board.printBoard();

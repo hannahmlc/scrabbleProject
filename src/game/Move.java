@@ -5,6 +5,7 @@ import game.exceptions.InvalidIndexException;
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
 import java.util.Scanner;
+import utils.ANSI;
 import utils.LetterToPosition;
 import utils.TextIO;
 
@@ -12,8 +13,8 @@ public class Move {
 
     public static void makeMove(Board board, Player player)
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
-        String prompt = "> " + player.getName() + "make a move or swap letters, " +
-            "example move: H8;RICE;VER";
+        String prompt = "\n"  + "> " + player.getName() + " make a move or swap letters     "
+            + ANSI.WHITE_UNDERLINED +  "example move: H8;RICE;VER" + ANSI.RESET;
 
         System.out.println(prompt);
 
