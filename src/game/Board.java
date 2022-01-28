@@ -108,6 +108,7 @@ public class Board implements game.interfaces.Board {
      */
     @Override
     public String printBoard() {
+        System.out.print(boardFormat.formatBoard(this));
         return boardFormat.formatBoard(this);
     }
 

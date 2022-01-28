@@ -29,8 +29,11 @@ public class Scrabble {
             player2 = new Player(input2);
         }
 
-        List<Tile> bag = TileBag.generateTiles();
-        Game game = new Game (player1, player2, bag);
+        List<Tile> bagOfTiles = TileBag.generateTiles();
+
+        //System.out.println(bagOfTiles.size() + "    " + bagOfTiles.get(0).getLetter());
+
+        Game game = new Game (player1, player2, bagOfTiles);
         game.start();
     }
 }

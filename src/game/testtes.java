@@ -12,7 +12,7 @@ public class testtes {
             Board board = new Board();
             //System.out.println(BaordPrint.addLine());
             board.placeTile(0,1,"A");
-            System.out.println(board.printBoard());
+            board.printBoard();
             int b = LetterToPosition.getYfromLetter('B');
             System.out.println(b);
         }

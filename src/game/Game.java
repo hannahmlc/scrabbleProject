@@ -12,7 +12,7 @@ public class Game implements game.interfaces.Game {
 
     public static final int NUMBER_PLAYERS = 2;
 
-    List<Tile> bag;// = TileBag.generateTiles();
+    List<Tile> bag = new ArrayList<>(100);// = TileBag.generateTiles();
     private Board board;
     private final Player[] players;
     int currentPlayer;
@@ -20,6 +20,7 @@ public class Game implements game.interfaces.Game {
     public Game(Player p1, Player p2, List<Tile> bag) {
         this.board = new Board();
         this.bag = bag;
+       // bag = TileBag.generateTiles();
         this.players = new Player[NUMBER_PLAYERS];
         players[0] = p1;
         players[1] = p2;
@@ -38,6 +39,7 @@ public class Game implements game.interfaces.Game {
     public void play()
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         currentPlayer = (int)(Math.random() * 1);
+        board.printBoard();
         while (!gameOver()){
             currentPlayer = currentPlayer % 2; // player can only be 1(index 0) or 2 (index 1)
             board.printBoard();

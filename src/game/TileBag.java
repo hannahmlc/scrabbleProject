@@ -40,32 +40,132 @@ public class TileBag {
           Tile BLANK = new Tile("BLANK",0 );
 
           bag.add(A);
+          bag.add(A);
+          bag.add(A);
+          bag.add(A);
+          bag.add(A);
+          bag.add(A);
+          bag.add(A);
+          bag.add(A);
+          bag.add(A); //9xA
+
           bag.add(B);
+          bag.add(B); //2xB
+
           bag.add(C);
+          bag.add(C);//2xC
+
           bag.add(D);
+          bag.add(D);
+          bag.add(D);
+          bag.add(D);
+          bag.add(D); //4xD
+
           bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E);
+          bag.add(E); //12xE
+
           bag.add(F);
+          bag.add(F); //2xF
+
           bag.add(G);
+          bag.add(G); //2xG
+
           bag.add(H);
+          bag.add(H); //2xH
+
           bag.add(I);
+          bag.add(I);
+          bag.add(I);
+          bag.add(I);
+          bag.add(I);
+          bag.add(I);
+          bag.add(I);
+          bag.add(I); //8xI
+
           bag.add(J);
+          bag.add(J); //2xJ
+
           bag.add(K);
+          bag.add(K); //2xK
+
           bag.add(L);
+          bag.add(L);
+          bag.add(L);
+          bag.add(L); //4xL
+
           bag.add(M);
+          bag.add(M); //2xM
+
           bag.add(N);
+          bag.add(N);
+          bag.add(N);
+          bag.add(N);
+          bag.add(N);
+          bag.add(N); //6xN
+
           bag.add(O);
+          bag.add(O);
+          bag.add(O);
+          bag.add(O);
+          bag.add(O);
+          bag.add(O);
+          bag.add(O);
+          bag.add(O); //8xO
+
           bag.add(P);
-          bag.add(Q);
+          bag.add(P); //2xP
+
+          bag.add(Q); //1xQ
+
           bag.add(R);
+          bag.add(R);
+          bag.add(R);
+          bag.add(R);
+          bag.add(R);
+          bag.add(R); //6xR
+
           bag.add(S);
+          bag.add(S);
+          bag.add(S);
+          bag.add(S); //4xS
+
           bag.add(T);
+          bag.add(T);
+          bag.add(T);
+          bag.add(T);
+          bag.add(T);
+          bag.add(T); //6xT
+
           bag.add(U);
+          bag.add(U);
+          bag.add(U);
+          bag.add(U);//4xU
+
           bag.add(V);
+          bag.add(V);//2xV
+
           bag.add(W);
-          bag.add(X);
+          bag.add(W);//2xW
+
+          bag.add(X);//1xX
+
           bag.add(Y);
-          bag.add(Z);
+          bag.add(Y);//2xY
+
+          bag.add(Z);//1xZ
+
           bag.add(BLANK);
+          bag.add(BLANK); //2xBLANK
           return bag;
       }
 

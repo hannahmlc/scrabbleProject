@@ -4,6 +4,7 @@ import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ import java.util.Scanner;
 public class Player implements game.interfaces.Player {
 
    private final String username;
-   public List<Tile> rack;
+   public List<Tile> rack  = new ArrayList<>(7);
    public int score;
 
     public Player(String username) {
