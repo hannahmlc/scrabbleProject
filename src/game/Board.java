@@ -231,7 +231,7 @@ public class Board implements game.interfaces.Board {
     public void placeVertically(int x, int y, char[] letters) throws InvalidInputException {
         for(int i=0;i<letters.length;i++){
             String letter = String.valueOf(letters[i]);
-            if (getField(x,y)!=null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
+            if (getField(x,y)==null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
             else throw new InvalidInputException();
             x++;
         }
@@ -247,6 +247,16 @@ public class Board implements game.interfaces.Board {
     @Override
     public boolean isValidWord(String word) {
         return false;
+    }
+
+    /**
+     * @param score - player's current score
+     * @param tile  - tile player used
+     * @ensures added score to player's score is correct
+     */
+    @Override
+    public void calculateAddScore(int score, Tile tile) {
+
     }
 
 }

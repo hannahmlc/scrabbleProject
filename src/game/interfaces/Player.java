@@ -5,17 +5,18 @@ import java.util.List;
 
 public interface Player {
 
-    public void addLetters(List<Tile> bag);
+     void addLetters(List<Tile> bag);
 
-    public List<Tile> getRack();
+     List<Tile> getRack();
 
-    public void printRack(List<Tile> rack);
+    void printRack(List<Tile> rack);
 
-    public int getScore();
+    int getScore();
 
-    public void addPoints(int points);
+    void addPoints(int points);
 
-    public String getName();
+    String getName();
+
 
 
 }

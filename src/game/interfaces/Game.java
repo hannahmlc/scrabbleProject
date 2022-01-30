@@ -1,23 +1,23 @@
 package game.interfaces;
 
+import game.Tile;
 import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
-import java.util.List;
 import game.Player;
 
 public interface Game {
 
-    public void play()
+    void play()
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException;
 
 
-    public Board getBoard();
+    Board getBoard();
 
-    public String getWinner();
+    String getWinner();
 
-    public String getPlayers();
+    String getPlayers();
 
 
     /**
@@ -25,11 +25,11 @@ public interface Game {
      * return true if game is active, false otherwise
      * @ensures game that is being played is acitve
      */
-    public boolean gameOver();
+    boolean gameOver();
 
-    public boolean noTilesLeft();
+    boolean noTilesLeft();
 
-    public void printResult(Player p1, Player p2);
+    void printResult(Player p1, Player p2);
 
 
     /*

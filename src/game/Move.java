@@ -6,13 +6,14 @@ import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
 import java.util.Scanner;
 import utils.ANSI;
-import utils.LetterToPosition;
+import utils. inputToPosition;
 import utils.TextIO;
 
 public class Move {
 
     public static void makeMove(Board board, Player player)
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+
         String prompt = "\n"  + "> " + player.getName() + " make a move or swap letters     "
             + ANSI.WHITE_UNDERLINED +  "example move: H8;RICE;VER" + ANSI.RESET;
 
@@ -23,11 +24,13 @@ public class Move {
         else {
 
             String positions = split[0];
-            int x = positions.charAt(0);
-            char charY = positions.charAt(1);
-            int y = LetterToPosition.getYfromLetter(charY);
-            x-=1;//array indexing
-            y-=1;//array indexing
+            char charX = positions.charAt(1);
+            int x =  inputToPosition.getPositionFromNumber(charX);
+            char charY = positions.charAt(0);
+            int y =  inputToPosition.getPositionFromLetter(charY);
+            x = x- 1;//array indexing
+            y = y - 1;//array indexing
+
 
             String letters = split[1];
             char[] lettersArray = letters.toCharArray();
@@ -47,6 +50,7 @@ public class Move {
             }
 
         }
+
     }
 
 }
