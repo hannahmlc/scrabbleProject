@@ -43,6 +43,7 @@ public class Game implements game.interfaces.Game {
             currentPlayer = currentPlayer % 2; // player can only be 1(index 0) or 2 (index 1)
             board.printBoard();
             this.board = players[currentPlayer].playerMove(board);
+            players[currentPlayer].addLetters(bag); // add letters after move
             currentPlayer++; // change player
         }
         board.printBoard(); // print updated board

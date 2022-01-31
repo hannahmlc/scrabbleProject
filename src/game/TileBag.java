@@ -6,6 +6,9 @@ import java.util.List;
 public class TileBag {
     List<Tile> bag = new ArrayList<>(100);
 
+    TileBag(){
+        this.bag = generateTiles();
+    }
 
       public static List<Tile> generateTiles(){
           List<Tile> bag = new ArrayList<>(100);
@@ -165,6 +168,7 @@ public class TileBag {
           bag.add(BLANK); //2xBLANK
           return bag;
       }
+
 
       //private static class tileQuantity{}
 

@@ -214,8 +214,8 @@ public class Board implements game.interfaces.Board {
     public void placeHorizontally(int x, int y, char[] letters) throws InvalidInputException {
             for(int i=0;i<letters.length;i++){
                 String letter = String.valueOf(letters[i]);
-                if (getField(x,y)!=null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
-                    else throw new InvalidInputException();
+                if (getField(x,y)==null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
+                    else throw new InvalidInputException();//TODO: make sure word isny logner then place from given tile (example, h12 ver, word cant be 10 letters
                     y++;
             }
     }
@@ -232,7 +232,7 @@ public class Board implements game.interfaces.Board {
         for(int i=0;i<letters.length;i++){
             String letter = String.valueOf(letters[i]);
             if (getField(x,y)==null && isField(x,y)) placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
-            else throw new InvalidInputException();
+            else throw new InvalidInputException(); //TODO: make sure word isny logner then place from given tile (example, h12 ver, word cant be 10 letters
             x++;
         }
     }

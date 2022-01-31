@@ -4,20 +4,47 @@ package game;
 
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import utils. inputToPosition;
 
 public class testtes {
 
-    //TODO: score generaiton
     //TODO: server, clinet
     //TODO: unit testing
 
     //TODO: delete this:
     public static void main(String[] args) {
+
+
+        int i = inputToPosition.getPositionFromString("9");
+         i = i-2;System.out.println(i);
+
+
+
         Board board = new Board();
         //System.out.println(BaordPrint.addLine());
+        String name ="lol";
+        List<Tile> bag = TileBag.generateTiles();
+        Player p1 = new Player(name);
+        System.out.println(bag.size());
+        p1.addLetters(bag);
+        System.out.println(bag.size());
+
+        p1.printRack( p1.getRack());
+
+
         board.placeTile(7, 7, "A");
+        Tile A = new Tile("A",1 );
+        Tile B = new Tile("B",3 );
+        Tile C = new Tile("C",5 );
+        List<Tile> tile = new ArrayList<>();
+        tile.add(A);
+        tile.add(B);
+        tile.add(C);
+        int score = Scoring.LetterScore("A",tile);
+        System.out.println("Score " + score);
             /*
             for (int i=0;i<14;i++)
                 for (int j=0;j<14;j++)
