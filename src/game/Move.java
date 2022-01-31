@@ -17,13 +17,16 @@ public class Move {
 //TODO: handle blank tiles
 
         String prompt = "\n"  + "> " + player.getName() + " make a move or swap letters     "
-            + ANSI.WHITE_UNDERLINED +  "example move: MOVE;H8;RICE;VER || SWAP;ABCD" + ANSI.RESET;
+            + ANSI.WHITE_UNDERLINED +  "example move: MOVE;H8;RICE;VER || SWAP;ABCD ||SWAP; (swap without letter is considered skiping a move)" + ANSI.RESET;
         System.out.println(prompt);
 
         String [] split = new Scanner(System.in).next().toUpperCase().split(";");
 
         if (split.length<2) {
-             System.out.println(new InvalidInputException().getMessage());
+            if (split.length==1 && split[0].equals("STOP")) player.continues=false;
+                else{
+                System.out.println(new InvalidInputException().getMessage());
+            }
         } else if(split[0].equals("SWAP")){
             swapLetters(player,split);
         } else {

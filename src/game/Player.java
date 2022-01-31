@@ -13,6 +13,7 @@ public class Player implements game.interfaces.Player {
    private final String username;
    public List<Tile> rack  = new ArrayList<>(7);
    public int score;
+    boolean continues = true;
 
     public Player(String username) {
         this.username = username;
@@ -58,18 +59,9 @@ public class Player implements game.interfaces.Player {
     }
 
     @Override
-    public boolean hasLetter(char Letter) {
+    public boolean hasLetter(char Letter) { //TODO: checking if used by player letter is actually in their rack
         List<String> tileLetters = TileLetters(this.getRack());
        return tileLetters.contains(Character.toString(Letter));
-    }
-
-    @Override
-    public int sumRack(List<Tile> rack) {
-        int sum = 0;
-        for (Tile tile : rack) {
-            sum += tile.getPoints();
-        }
-        return sum;
     }
 
     @Override
@@ -96,13 +88,17 @@ public class Player implements game.interfaces.Player {
         return this.username;
     }
 
-    public Board playerMove(Board board)
-        throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+    @Override
+    public Board playerMove(Board board) throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         System.out.println("Your Letters:");
         printRack(this.getRack());
         Move.makeMove(board, this);
         return board;
     }
 
+    @Override
+    public boolean playerInGame() {
+        return this.continues;
+    }
 
 }

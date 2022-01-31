@@ -28,13 +28,14 @@ public class Game implements game.interfaces.Game {
         //currentPlayer = (int)(Math.random() * 1);
     }
 
-    public void start()
-        throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+    @Override
+    public void start() throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         currentPlayer = 0;
         board.reset();
         play();
     }
 
+    @Override
     public void play()
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         currentPlayer = (int)(Math.random() * 1);
@@ -47,22 +48,17 @@ public class Game implements game.interfaces.Game {
             currentPlayer++; // change player
         }
         board.printBoard(); // print updated board
-        //this.printResult(p1, p2);
+        printResult(players[0],players[1]);
     }
 
     @Override
-    public game.interfaces.Board getBoard() {
-        return null;
+    public Board getBoard() {
+        return this.board;
     }
 
     @Override
-    public String getWinner() {
-        return null;
-    }
-
-    @Override
-    public String getPlayers() {
-        return null;
+    public Player[] getPlayers() {
+        return this.players;
     }
 
     /**
@@ -71,9 +67,10 @@ public class Game implements game.interfaces.Game {
      * @ensures game that is being played is active
      */
     public boolean gameOver() {
-        return (noTilesLeft() || board.isFull());
+        return (noTilesLeft() || board.isFull() || !players[0].continues || !players[1].continues);
     }
 
+    @Override
     public boolean noTilesLeft() {
         return bag.size() == 0;
     }
@@ -81,24 +78,45 @@ public class Game implements game.interfaces.Game {
     @Override
     public void printResult(Player p1, Player p2) {
         if (this.winner(p1,p2)==p1){
-            System.out.println();
+            System.out.println("Winner player: " +p1.getName());
 
         } else if (this.winner(p1,p2)==p2){
-            System.out.println();
+            System.out.println("Winner player: " +p2.getName());
         }else {
             System.out.println("Draw. There is no winner!");
         }
     }
 
-
+    @Override
     public Player winner(Player p1, Player p2){
         int score1 = p1.getScore();
         int score2 = p2.getScore();
-        if (score1>score2) return p1;
-            else if (score1<score2) return p2;
-                else return null; //In case of a tie, the player with the highest score before adding or deducting unplayed letters wins.
+
+        int finalScore1 = playerFinalScore(p1);
+        int finalScore2 = playerFinalScore(p2);
+
+        if (p1.getRack().size()==0){
+            score1 += playerFinalScore(p2);
+        }
+        if (p2.getRack().size()==0){
+            score2 += playerFinalScore(p1);
+        }
+
+        if (finalScore1>finalScore2) { return p1;}
+            else if (finalScore1<finalScore2){ return p2 ;}
+                else {//In case of a tie, the player with the highest score before adding or deducting unplaced letters wins.
+                    if (score1>score2){ return p1; }
+                        else if (score1<score2){ return p2; }
+                          else return null; //all scores are draw
+                }
 
     }
+
+    @Override
+    public int playerFinalScore(Player player){
+        return player.getScore() - Scoring.unplacedLettersSum(player);
+    }
+
 
 
 }

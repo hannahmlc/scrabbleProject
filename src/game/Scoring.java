@@ -97,6 +97,17 @@ public class Scoring {
     public static void bingo(int score ){
         score +=50;
     }
+
+    public static int unplacedLettersSum(Player player){
+        int sum = 0;
+        List<Tile> tiles = player.getRack();
+        if (tiles.size()>0){
+            for (Tile tile : tiles) {
+                sum = tile.getPoints();
+            }
+        }
+        return sum;
+    }
 }
 /*
 

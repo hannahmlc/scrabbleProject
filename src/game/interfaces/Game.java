@@ -9,15 +9,13 @@ import game.Player;
 
 public interface Game {
 
-    void play()
-        throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException;
+    public void start() throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException ;
 
+    void play() throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException;
 
     Board getBoard();
 
-    String getWinner();
-
-    String getPlayers();
+    Player[] getPlayers();
 
 
     /**
@@ -31,11 +29,7 @@ public interface Game {
 
     void printResult(Player p1, Player p2);
 
+    public Player winner(Player p1, Player p2);
 
-    /*
-    public void move(String[] tiles, String playerName) throws Exception;
-
-
-
-     */
+    int playerFinalScore(Player player);
 }

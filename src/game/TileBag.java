@@ -38,7 +38,7 @@ public class TileBag {
           Tile X = new Tile("X",8 );
           Tile Y = new Tile("Y",4 );
           Tile Z = new Tile("Z",10 );
-          Tile BLANK = new Tile("BLANK",0 );
+          Tile BLANK = new Tile("-",0 ); //BLANK tiles
 
           bag.add(A);
           bag.add(A);
