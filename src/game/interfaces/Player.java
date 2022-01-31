@@ -16,6 +16,8 @@ public interface Player {
 
     boolean hasLetter(char Letter);
 
+    int sumRack (List<Tile> rack);
+
     List<String> TileLetters(List<Tile> tiles);
 
     int getScore();

@@ -96,7 +96,8 @@ public class Game implements game.interfaces.Game {
         int score2 = p2.getScore();
         if (score1>score2) return p1;
             else if (score1<score2) return p2;
-                else return null;
+                else return null; //In case of a tie, the player with the highest score before adding or deducting unplayed letters wins.
+
     }
 
 

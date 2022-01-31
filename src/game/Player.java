@@ -64,6 +64,15 @@ public class Player implements game.interfaces.Player {
     }
 
     @Override
+    public int sumRack(List<Tile> rack) {
+        int sum = 0;
+        for (Tile tile : rack) {
+            sum += tile.getPoints();
+        }
+        return sum;
+    }
+
+    @Override
     public List<String> TileLetters(List<Tile> tiles) {
         List<String> tileLetters = new ArrayList<>(7);
         for(int i=0;i<7;i++){
