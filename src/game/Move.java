@@ -76,28 +76,27 @@ public class Move {
         //removing letters from players rack and adding new ones
         String letters = input[2];
         char[] lettersArray = letters.toCharArray();
-        if (board.isValidWord(letters)) {
+        if (!board.isValidWord(letters)) {
             System.out.println(new InvalidWordException().getMessage());
-        }
-
-        //placing letters on board
-        String direction = input[3];
-        if (!board.isField(x,y) || !board.isEmptyField(x,y)) {
-            System.out.println(new InvalidIndexException().getMessage());
-        }
-        else{
-            if(direction.equals("HOR")){
-                board.placeHorizontally(x,y,lettersArray);
-                addScoreHOR(player,lettersArray,x,y,board);
-            } else if(direction.equals("VER")){
-                board.placeVertically(x,y,lettersArray);
-                addScoreVER(player,lettersArray,x,y,board);
-            } else{
-                System.out.println(new InvalidDirectionException().getMessage());
+        }else{
+            //placing letters on board
+            String direction = input[3];
+            if (!board.isField(x,y) || !board.isEmptyField(x,y)) {
+                System.out.println(new InvalidIndexException().getMessage());
             }
+            else{
+                if(direction.equals("HOR")){
+                    board.placeHorizontally(x,y,lettersArray);
+                    addScoreHOR(player,lettersArray,x,y,board);
+                } else if(direction.equals("VER")){
+                    board.placeVertically(x,y,lettersArray);
+                    addScoreVER(player,lettersArray,x,y,board);
+                } else{
+                    System.out.println(new InvalidDirectionException().getMessage());
+                }
+            }
+            player.removeLetters(player.getRack(),lettersArray);
         }
-
-        player.removeLetters(player.getRack(),lettersArray);
     }
 
 }

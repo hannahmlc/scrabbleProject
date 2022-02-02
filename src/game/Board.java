@@ -1,6 +1,8 @@
 package game;
 import game.BoardView.boardPrint;
 import game.exceptions.InvalidInputException;
+import wordChecker.java.FileStreamScrabbleWordChecker;
+import wordChecker.java.ScrabbleWordChecker;
 
 public class Board implements game.interfaces.Board {
 
@@ -240,6 +242,7 @@ public class Board implements game.interfaces.Board {
         }
     }
 
+    ScrabbleWordChecker checker = new FileStreamScrabbleWordChecker();
     /**
      * Check if created word exist in dictionary
      * @param word - word that needs to be checked
@@ -249,7 +252,12 @@ public class Board implements game.interfaces.Board {
      */
     @Override
     public boolean isValidWord(String word) {
-        return false;
+        ScrabbleWordChecker.WordResponse response = checker.isValidWord(word);
+        if(response == null){
+            return false;
+        } else{
+            return true;
+        }
     }
 
     /**
