@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Test;
 class PlayerTest {
 
     private Player player;
-    private List<Tile> rack  = new ArrayList<>(7);
     private int score;
     private boolean continues = true;
 
-    private List<Tile> bag = new ArrayList<>(7);
-    private Tile A = new Tile("A",1 );
-    private Tile B = new Tile("B",3 );
-    private Tile C = new Tile("C",3 );
-    private Tile D = new Tile("D",2 );
-    private Tile E = new Tile("E",1 );
-    private Tile F = new Tile("F",4 );
-    private Tile G = new Tile("G",2 );
+    private final List<Tile> bag = new ArrayList<>(7);
+    private final Tile A = new Tile("A",1 );
+    private final Tile B = new Tile("B",3 );
+    private final Tile C = new Tile("C",3 );
+    private final Tile D = new Tile("D",2 );
+    private final Tile E = new Tile("E",1 );
+    private final Tile F = new Tile("F",4 );
+    private final Tile G = new Tile("G",2 );
 
     @BeforeEach
     public void setUp() {
@@ -70,7 +69,7 @@ class PlayerTest {
     }
 
     @Test
-    public void testhHasLetters(){
+    public void testHasLetters(){
         player.getRack().add(A);
         assertTrue(player.hasLetter('A'));
         assertFalse(player.hasLetter('D'));

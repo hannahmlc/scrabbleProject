@@ -1,13 +1,17 @@
 package game.protocol;
 
+import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
 import java.io.IOException;
 
 //TODO: add needed parameters to methods
 public interface serverProtocol {
 
+    //starts / runs the connection
+    public void start();
+
     //Opens a new ServerSocket at localhost on a user-defined port.
-    public  void setup();
+    public  void setup() throws ExitProgram;
 
     public void getHello() throws ServerUnavailableException;
 

@@ -4,15 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import game.Board;
 import game.FieldType;
-import game.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
 
     private Board board;
-   // private Tile tile1;
-   // private Tile tile2;
 
     @BeforeEach
     public void setUp() {

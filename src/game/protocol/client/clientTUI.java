@@ -53,5 +53,6 @@ public class clientTUI {
     }
 
     public void handleError(String error) {
+        //TODO: handle ERRORS prompts
     }
 }

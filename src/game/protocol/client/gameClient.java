@@ -12,15 +12,16 @@ import static game.protocol.commands.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.List;
-import javax.print.DocFlavor;
+import utils.ANSI;
+
 
 public class gameClient implements clientProtocol {
 
-    private static Game currentGame;
+    private static Game game;
+    private boolean lookingForPlayers = false;//waiting for ready from both players to start game
 
-    private Socket serverSock;
+    private Socket sock;
     private BufferedReader in;
     private BufferedWriter out;
 
@@ -35,7 +36,7 @@ public class gameClient implements clientProtocol {
     }
 
     @Override
-    public void start() throws ExitProgram, ServerUnavailableException {
+    public void start() {
         try {
             createConnection();
             doHello();
@@ -43,30 +44,30 @@ public class gameClient implements clientProtocol {
             clientTUI.start();
         } catch (ServerUnavailableException | ExitProgram | IOException e) {
             clientTUI.handleError(String.valueOf(e));
-            //TODO: make so that it can start new connection insetad of closing
+            //TODO: make so that it can start new connection instead of closing
         }
 
     }
 
     @Override
     public void createConnection() throws ExitProgram {
-
         clearConnection();
 
-        while (serverSock == null) {
-            String host = clientTUI.getString("Provide ip of server: ");
-            int port = clientTUI.getPort("Provide port of server: ");
+        while (sock == null) {
+            String host = clientTUI.getString("Provid " + ANSI.GREEN_BOLD + "IP: " + ANSI.RESET);
+            int port = clientTUI.getPort("Provide " + ANSI.GREEN_BOLD + "port: " + ANSI.RESET);
 
             // try to open a Socket to the server
             try {
                 InetAddress addr = InetAddress.getByName(host);
-                clientTUI.printMessage("Attempting to connect to " + addr + ":"
-                    + port + "...");
-                serverSock = new Socket(addr, port);
+                clientTUI.printMessage("Attempting to connect to " + addr + " : " + port + "...");
+
+                sock = new Socket(addr, port);
                 in = new BufferedReader(new InputStreamReader(
-                    serverSock.getInputStream()));
+                    sock.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(
-                    serverSock.getOutputStream()));
+                    sock.getOutputStream()));
+
             } catch (IOException e) {
                 throw new ExitProgram("ERROR: could not create a socket on "
                     + host + " and port " + port + ".");
@@ -77,7 +78,7 @@ public class gameClient implements clientProtocol {
 
     @Override
     public void clearConnection() {
-        serverSock = null;
+        sock = null;
         in = null;
         out = null;
     }
@@ -163,14 +164,13 @@ public class gameClient implements clientProtocol {
         try {
             in.close();
             out.close();
-            serverSock.close();
+            sock.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private boolean lookingForPlayers = false;
-    private static Game game;
+
     @Override
     public void waitForPlayers() throws IOException, ServerUnavailableException {
         while (lookingForPlayers) {
@@ -186,7 +186,7 @@ public class gameClient implements clientProtocol {
                     Player player2 = new Player(split[2]);
                     List<Tile> bagOfTiles = TileBag.generateTiles();
 //TODO: finsih game creation
-                    this.game = new Game(player1, player2,bagOfTiles);
+                    game = new Game(player1, player2,bagOfTiles);
 
                     clientTUI.printMessage(game.getBoard().printBoard());
                     lookingForPlayers = false;
@@ -194,5 +194,9 @@ public class gameClient implements clientProtocol {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        (new gameClient()).start();
     }
 }
