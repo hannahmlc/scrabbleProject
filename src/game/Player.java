@@ -13,7 +13,7 @@ public class Player implements game.interfaces.Player {
    private final String username;
    public List<Tile> rack  = new ArrayList<>(7);
    public int score;
-    boolean continues = true;
+   boolean continues = true;
 
     public Player(String username) {
         this.username = username;
@@ -50,12 +50,12 @@ public class Player implements game.interfaces.Player {
     }
 
     @Override
-    public void printRack(List<Tile> rack) {
+    public String printRack(List<Tile> rack) {
         String rackString = "";
         for (Tile tile : rack) {
             rackString += "[" + tile.getLetter() + "] ";
         }
-        System.out.println(rackString);
+        return (rackString);
     }
 
     @Override
@@ -64,11 +64,12 @@ public class Player implements game.interfaces.Player {
        return tileLetters.contains(Character.toString(Letter));
     }
 
+    //get list of letters from list tiles
     @Override
     public List<String> TileLetters(List<Tile> tiles) {
-        List<String> tileLetters = new ArrayList<>(7);
-        for(int i=0;i<7;i++){
-            tileLetters.add(tiles.get(0).getLetter());
+        List<String> tileLetters = new ArrayList<>(tiles.size());
+        for(int i=0;i<tiles.size();i++){
+            tileLetters.add(tiles.get(i).getLetter());
         }
         return tileLetters;
     }
@@ -91,7 +92,7 @@ public class Player implements game.interfaces.Player {
     @Override
     public Board playerMove(Board board) throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         System.out.println("Your Letters:");
-        printRack(this.getRack());
+        System.out.println(printRack(this.getRack()));
         Move.makeMove(board, this);
         return board;
     }

@@ -7,7 +7,6 @@ import game.exceptions.InvalidIndexException;
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
 import java.util.List;
-import zUnused_Scrappe.Letters;
 
 public interface Player {
 
@@ -17,7 +16,7 @@ public interface Player {
 
      List<Tile> getRack();
 
-    void printRack(List<Tile> rack);
+    String printRack(List<Tile> rack);
 
     boolean hasLetter(char Letter);
 
@@ -29,9 +28,9 @@ public interface Player {
 
     String getName();
 
-    public game.Board playerMove(Board board)  throws InvalidInputException, InvalidIndexException,
+    game.Board playerMove(Board board)  throws InvalidInputException, InvalidIndexException,
         InvalidWordException, InvalidDirectionException;
 
-    public boolean playerInGame(); // chekcing whatever player is in game, also true if on of player decided they no longer want to continue the game
+    boolean playerInGame(); // chekcing whatever player is in game, also true if on of player decided they no longer want to continue the game
 
 }

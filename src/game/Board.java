@@ -37,17 +37,6 @@ public class Board implements game.interfaces.Board {
         }
     }
 
-    /**
-     * set the tile on board
-     * @param x - horizontal index on board
-     * @param y - diagonal index on board
-     * @param letter - tile to place
-     */
-    @Override
-    public void setTile(int x, int y, String letter) {
-        tiles[x][y] = letter;
-    }
-
     //TODO: make sure get field up/down etc arent out of bounds
     /**
      * @param x - horizontal index on board
@@ -124,7 +113,7 @@ public class Board implements game.interfaces.Board {
     public void reset() {
         for (int i=0;i<DIM;i++){
             for (int j=0;j<DIM;j++){
-                setTile(i,j, null);
+                placeTile(i,j, null);
             }
         }
     }

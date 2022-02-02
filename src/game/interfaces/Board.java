@@ -16,14 +16,6 @@ public interface Board {
     void placeTile(int x, int y, String tile);
 
     /**
-     * set the tile on board
-     * @param x - horizontal index on board
-     * @param y - diagonal index on board
-     * @param letter - tile to place
-     */
-    void setTile(int x, int y, String letter);
-
-    /**
      * @param x - horizontal index on board
      * @param y - diagonal index on board
      * @return field of given index
