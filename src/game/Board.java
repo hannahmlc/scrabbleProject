@@ -132,7 +132,7 @@ public class Board implements game.interfaces.Board {
      * @return special places on board
      */
     @Override
-    public FieldType specialFiled(int x, int y) {
+    public FieldType fieldType(int x, int y) {
         if (x==7 && y==7) return FieldType.CENTER; //8x8 normally, -1 because array
         else if ((x==0 && y==0) || (x==0 && y==14) || (x==14 && y==0) ||(x==14 && y==14)) return FieldType.TRIPLE_W; // corners
         else if ((x==0 && y==7) || (x==7 && y==0) || (x==7 && y==14) ||(x==14 && y==7)) return FieldType.TRIPLE_W; // middle corners

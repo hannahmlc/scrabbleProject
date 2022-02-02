@@ -16,7 +16,7 @@ public class Scoring {
         boolean tripleW = false;
         FieldType field;
         for (int i=0; i<Letters.length;i++){
-            field = board.specialFiled(x,y);
+            field = board.fieldType(x,y);
             String Letter = String.valueOf(Letters[i]);
             switch (field){
                 case CENTER: // pale red  (same as double_w)
@@ -53,7 +53,7 @@ public class Scoring {
         boolean tripleW = false;
         FieldType field;
         for (int i=0; i<Letters.length;i++){
-            field = board.specialFiled(x,y);
+            field = board.fieldType(x,y);
             String Letter = String.valueOf(Letters[i]);
             switch (field){
                 case CENTER: // pale red  (same as double_w)

@@ -73,7 +73,7 @@ public interface Board {
     /**
      * @return special places on board
      */
-    FieldType specialFiled(int x, int z);
+    FieldType fieldType(int x, int z);
 
     /**
      * @return true if board is full (all places are taken)

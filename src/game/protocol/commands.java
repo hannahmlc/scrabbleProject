@@ -22,4 +22,5 @@ public class commands {
 
 
     public static final String DELIMITER = ";";
+    public static final String END = "!";
 }

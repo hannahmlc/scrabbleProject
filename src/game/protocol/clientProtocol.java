@@ -1,5 +1,6 @@
 package game.protocol;
 
+import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
 import java.io.IOException;
 
@@ -11,7 +12,7 @@ public interface clientProtocol {
 
      // Creates a connection to the server. Requests the IP and port to
      // connect to at the view (TUI).
-    public void createConnection();
+    public void createConnection() throws ExitProgram;
 
     //disconnects with server
     // Clear sockets and close connection with user.
@@ -23,7 +24,7 @@ public interface clientProtocol {
 
     // Read messages that came from server
     // parsed message from server to string
-    public String readLineFromServer() throws ServerUnavailableException;
+    public String readLinesFromServer() throws ServerUnavailableException, IOException;
 
     //Handles server-client handshake
     // 1. Client sends command.HELLO to server
@@ -51,4 +52,7 @@ public interface clientProtocol {
 
     //send message to server client will quit the game
     public void quit() throws ServerUnavailableException;
+
+    //close connection after client quits/exit
+    void closeConnection();
 }

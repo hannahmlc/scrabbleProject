@@ -24,7 +24,7 @@ public class boardPrint {
             //square tiles generation
             for (int y = 0; y < DIM; y++)
             {
-                FieldType field = board.specialFiled(x,y);
+                FieldType field = board.fieldType(x,y);
                 switch (field){
                     case CENTER: // pale red  (same as double_w)
                     case DOUBLE_W: // pale red
