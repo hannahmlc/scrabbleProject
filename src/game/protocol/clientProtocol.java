@@ -7,20 +7,20 @@ import java.io.IOException;
 //TODO: add needed parameters to methods
 public interface clientProtocol {
 
-    //used for ip and port to crrate connection, start connection with server
-    public void start();
+    // starts connection with server
+    void start() throws ExitProgram, ServerUnavailableException;
 
      // Creates a connection to the server. Requests the IP and port to
      // connect to at the view (TUI).
-    public void createConnection() throws ExitProgram;
+     void createConnection() throws ExitProgram;
 
     //disconnects with server
     // Clear sockets and close connection with user.
-    public void clearConnection();
+    void clearConnection();
 
     // Sends a message to the connected server, followed by a new line.
     // The stream is then flushed.
-    public void sendMessage(String msg) throws ServerUnavailableException;
+    void sendMessage(String msg) throws ServerUnavailableException;
 
     // Read messages that came from server
     // parsed message from server to string
@@ -33,26 +33,29 @@ public interface clientProtocol {
 
 
   //client joins with username, join;name
-    public void join() throws ServerUnavailableException;
+    void join() throws ServerUnavailableException;
 
     //client informs about being ready: ready
-    public void ready() throws ServerUnavailableException;
+    void ready() throws ServerUnavailableException, IOException;
 
     // Print board.
-    // Checks who makes first move,waitForMoveResponse(), call sendMove().
-    public void play() throws ServerUnavailableException, IOException;
+    // Checks who make first move,waitForMoveResponse(), call sendMove().
+    void play() throws ServerUnavailableException, IOException;
 
     // Wait for MOVE;<positions>;<letters>;<directions>!
     //or SWAP;<letters/none>!
-    public void waitForMoveResponse() throws ServerUnavailableException, IOException;
+    void waitMove() throws ServerUnavailableException, IOException;
 
-    //Send moves from user to server, waitForMoveResponse().
+    //Send moves from user to server, waitForMove().
     //call clearConnection().
-    public void sendMove(int[] indices) throws ServerUnavailableException, IOException;
+    void sendMove(int[] indices) throws ServerUnavailableException, IOException;
 
     //send message to server client will quit the game
-    public void quit() throws ServerUnavailableException;
+    void quit() throws ServerUnavailableException;
 
     //close connection after client quits/exit
     void closeConnection();
+
+    //wait for both player to type ready top start game
+    void waitForPlayers() throws IOException, ServerUnavailableException;
 }
