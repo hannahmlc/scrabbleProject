@@ -2,6 +2,7 @@ package game.protocol;
 
 import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
+import game.protocol.server.clientHandler;
 import java.io.IOException;
 
 //TODO: add needed parameters to methods
@@ -13,10 +14,10 @@ public interface serverProtocol {
     //Opens a new ServerSocket at localhost on a user-defined port.
     public  void setup() throws ExitProgram;
 
-    public void getHello() throws ServerUnavailableException;
+    void welcome(clientHandler client);
 
-    //Removes a client from the client list.
-    public void removeClient();
+    //Removes a client from the client list after they quit
+    void removeClient(clientHandler client);
 
     //check is client name is already in use or not
     public boolean join(String username);

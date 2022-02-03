@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 import utils.ANSI;
+import static game.protocol.commands.*;
 
 public class gameServer implements serverProtocol {
 
@@ -17,7 +18,7 @@ public class gameServer implements serverProtocol {
     private List<clientHandler> clients;
     private List<String> clientNames;
 
-    private final List<clientHandler> queue; // queue where player waits till othjer player connect to start gane
+    private final List<clientHandler> queue; // queue where player waits till other player connect to start game
 
     //tui
     private final serverTUI serverTUI;
@@ -59,18 +60,22 @@ public class gameServer implements serverProtocol {
 
 
     @Override
-    public void getHello() throws ServerUnavailableException {
-
+    public void welcome(clientHandler client) {
+        serverTUI.printMessage(WELCOME + client.name+END);
     }
 
     @Override
-    public void removeClient() {
-
+    public void removeClient(clientHandler client) {
+        clients.remove(client);
+        clientNames.remove(client.name);
     }
 
     @Override
-    public boolean join(String username) {
-        return false;
+    public boolean join(String name) {
+        if (!clientNames.contains(name)) {
+            clientNames.add(name);
+        }
+        return !clientNames.contains(name);
     }
 
     @Override
