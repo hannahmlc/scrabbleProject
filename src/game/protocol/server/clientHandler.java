@@ -1,5 +1,6 @@
 package game.protocol.server;
 
+import game.exceptions.ServerUnavailableException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import static game.protocol.commands.*;
 
-public class clientHandler {
+public class clientHandler implements Runnable {
 
     private gameServer gameServer; // server
     public String name; //name of client
@@ -29,7 +30,6 @@ public class clientHandler {
             shutdown();
         }
     }
-
 
     private void shutdown() {
         System.out.println("Shut down"+END);
@@ -60,18 +60,60 @@ public class clientHandler {
             }
         }
 
-//of client already joine and if client didnt join yte TODO: looks backward
-
         switch (command) {
-            case QUIT+END:
+            case QUIT:
                 out.write("Shutdown");
                 break;
-
+            case WELCOME:
+                out.write(WELCOME + DELIMITER+name);
+                break;
+            case HELLO:
+                out.write(WELCOME + DELIMITER+name);
+                break;
+            case JOIN:
+                if (parameter1 == null) {
+                    out.write(ERROR+DELIMITER+"provide username"+END);
+                    out.newLine();
+                    out.flush();
+                }else if (gameServer.join(parameter1)) {
+                        name = parameter1;
+                        gameServer.welcome(this);
+                        out.write(WELCOME+DELIMITER+parameter1+END);
+                        out.newLine();
+                        out.flush();
+                    } else {
+                        out.write(ERROR+DELIMITER+"username taken"+END);
+                        out.newLine();
+                        out.flush();
+                    }
+                break;
             default:
-                out.write("Unknown command");
+                out.write(ERROR+DELIMITER+"incorrect command");
+                out.newLine();
+                out.flush();
         }
     }
 
 
 
+    @Override
+    public void run() {
+        String line;
+        try{
+           line = in.readLine();
+            while (line != null) {
+                System.out.println("[" + name + "] Incoming: " + line);
+                handleCommands(line);
+                //new game
+                //TODO: rechek if it shouldn't be in handle commands
+                gameServer.createGame();
+                line = in.readLine();
+            }
+            shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+            shutdown();
+        }
+
+    }
 }

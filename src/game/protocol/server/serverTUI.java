@@ -23,9 +23,18 @@ public class serverTUI {
 
 
     public int getPort(String prompt) {
-        System.out.println(prompt);
+        printMessage(prompt);
         int port = Integer.parseInt(new Scanner(System.in).nextLine());
         return port ;
     }
 
+    public boolean getBoolean(String prompt) {
+        printMessage(prompt);
+        boolean answer = Boolean.parseBoolean(new Scanner(System.in).nextLine());
+        return answer;
+    }
+
+    public void handleError(String error) {
+        //TODO: handle ERRORS prompts
+    }
 }

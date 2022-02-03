@@ -43,10 +43,13 @@ public class gameClient implements clientProtocol {
             join();
             clientTUI.start();
         } catch (ServerUnavailableException | ExitProgram | IOException e) {
-            clientTUI.handleError(String.valueOf(e));
-            //TODO: make so that it can start new connection instead of closing
+            clientTUI.handleError(e.getMessage());
+            if (clientTUI.getBoolean("Do you want to start a new connection ?")) {
+                start();
+            } else {
+                clientTUI.printMessage("See you later!");
+            }
         }
-
     }
 
     @Override
@@ -63,14 +66,13 @@ public class gameClient implements clientProtocol {
                 clientTUI.printMessage("Attempting to connect to " + addr + " : " + port + "...");
 
                 sock = new Socket(addr, port);
-                in = new BufferedReader(new InputStreamReader(
-                    sock.getInputStream()));
-                out = new BufferedWriter(new OutputStreamWriter(
-                    sock.getOutputStream()));
+                in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+                out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 
             } catch (IOException e) {
                 throw new ExitProgram("ERROR: could not create a socket on "
                     + host + " and port " + port + ".");
+
             }
         }
 
