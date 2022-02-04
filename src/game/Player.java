@@ -97,6 +97,13 @@ public class Player implements game.interfaces.Player {
         return board;
     }
 
+
+    public Board playerMove(Board board,int x, int y, char[] letters, String direction) throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+        Move.makeMove(board, this, x, y, letters, direction);
+        return board;
+    }
+
+
     @Override
     public boolean playerInGame() {
         return this.continues;

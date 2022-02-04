@@ -4,7 +4,6 @@ import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
-import java.util.List;
 import java.util.Scanner;
 import utils.ANSI;
 import utils. inputToPosition;
@@ -17,7 +16,7 @@ public class Move {
 //TODO: handle blank tiles
 
         String prompt = "\n"  + "> " + player.getName() + " make a move or swap letters     "
-            + ANSI.WHITE_UNDERLINED +  "example move: MOVE;H8;RICE;VER || SWAP;ABCD ||SWAP; (swap without letter is considered skiping a move)" + ANSI.RESET;
+            + ANSI.WHITE_UNDERLINED +  "example move: MOVE;H8;RICE;VER || SWAP;ABCD ||SWAP; (swap without letter is considered skipping a move)" + ANSI.RESET;
         System.out.println(prompt);
 
         String [] split = new Scanner(System.in).next().toUpperCase().split(";");
@@ -31,6 +30,33 @@ public class Move {
             swapLetters(player,split);
         } else {
             normalMove(board,player,split);
+        }
+    }
+
+    public static void makeMove(Board board, Player player, int x, int y, char[] letters, String direction)
+        throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+        String word = letters.toString();
+
+        //TODO: fix so that it counts letters already placed before as word
+        if (!board.isValidWord(word)) {
+            System.out.println(new InvalidWordException().getMessage());
+        }else{
+            //placing letters on board
+            if (!board.isField(x,y) || !board.isEmptyField(x,y)) {
+                System.out.println(new InvalidIndexException().getMessage());
+            }
+            else{
+                if(direction.equals("HOR")){
+                    board.placeHorizontally(x,y,letters);
+                    addScoreHOR(player,letters,x,y,board);
+                } else if(direction.equals("VER")){
+                    board.placeVertically(x,y,letters);
+                    addScoreVER(player,letters,x,y,board);
+                } else{
+                    System.out.println(new InvalidDirectionException().getMessage());
+                }
+            }
+            player.removeLetters(player.getRack(),letters);
         }
     }
 

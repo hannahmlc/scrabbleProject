@@ -42,13 +42,15 @@ public interface clientProtocol {
     // Checks who make first move,waitForMoveResponse(), call sendMove().
     void play() throws ServerUnavailableException, IOException;
 
+    void sendSwap(String line) throws ServerUnavailableException, IOException;
+
     // Wait for MOVE;<positions>;<letters>;<directions>!
     //or SWAP;<letters/none>!
     void waitMove() throws ServerUnavailableException, IOException;
 
     //Send moves from user to server, waitForMove().
     //call clearConnection().
-    void doMove(int[] indices) throws ServerUnavailableException, IOException;
+    void doMove(String move) throws ServerUnavailableException, IOException;
 
     //send message to server client will quit the game
     void quit() throws ServerUnavailableException, IOException;

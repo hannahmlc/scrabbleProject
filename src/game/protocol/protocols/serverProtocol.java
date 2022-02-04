@@ -1,12 +1,14 @@
 package game.protocol.protocols;
 
 import game.exceptions.ExitProgram;
+import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
+import game.exceptions.InvalidInputException;
+import game.exceptions.InvalidWordException;
 import game.exceptions.ServerUnavailableException;
 import game.protocol.server.clientHandler;
 import java.io.IOException;
 
-//TODO: add needed parameters to methods
 public interface serverProtocol {
 
 
@@ -31,9 +33,10 @@ public interface serverProtocol {
     // okay: save changes, check if gameOver
     // check if game over:  yes- close game / no - update board
     // not ok : sends error message to client
-     void doMove(int[] moveSplit, String name) throws InvalidIndexException;
 
-    void doMove(int[] move, String word, String direction, String name) throws InvalidIndexException;
+    void doMove(int x, int y, char[] letters, String direction, String name)
+        throws InvalidIndexException, ServerUnavailableException, IOException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 
     //ends game,send to still connected players who won
     void endGame() throws IOException;

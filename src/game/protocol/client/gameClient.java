@@ -13,8 +13,10 @@ import game.protocol.protocols.clientProtocol;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.time.Year;
 import java.util.List;
 import utils.ANSI;
+import utils.inputToPosition;
 
 
 public class gameClient implements clientProtocol {
@@ -58,7 +60,7 @@ public class gameClient implements clientProtocol {
         clearConnection();
 
         while (sock == null) {
-            String host = clientTUI.getString("Provid " + ANSI.GREEN_BOLD + "IP: " + ANSI.RESET);
+            String host = clientTUI.getString("Provide " + ANSI.GREEN_BOLD + "IP: " + ANSI.RESET);
             int port = clientTUI.getPort("Provide " + ANSI.GREEN_BOLD + "port: " + ANSI.RESET);
 
             // try to open a Socket to the server
@@ -109,20 +111,6 @@ public class gameClient implements clientProtocol {
         } else {
             throw new ServerUnavailableException("Could not read from server (no response form server)");
         }
-
-       /* if (in != null) {
-            String oneLine =in.readLine();
-            try {
-                for (String serverLine = in.readLine(); serverLine != null && !serverLine.equals(END); serverLine = in.readLine()) {
-                    oneLine = oneLine + serverLine + DELIMITER;
-                }
-                return oneLine;
-            }catch (IOException e) {
-                throw new ServerUnavailableException("Could not read from server (no response form server)");
-            }
-        }else {
-            throw new ServerUnavailableException("Could not read from server (no response form server)");
-        }*/
     }
 
     @Override
@@ -159,21 +147,41 @@ public class gameClient implements clientProtocol {
     @Override
     public void play() throws ServerUnavailableException, IOException {
         if(game.getCurrentPlayer().getName().equals(name)){
+            String line = clientTUI.getString("example move: MOVE;H8;RICE;VER || SWAP;ABCD ||SWAP; (swap without letter is considered skipping a move)");
+            String[] split = line.split(DELIMITER);
+            if (split[0].equals(MOVE)) {
+                doMove(line);
+            } else if (split[0].equals(SWAP)){
+                sendSwap(line);
 
+            } else {
+                clientTUI.printMessage("ERROR, wrong command");
+                play();
+            }
         }else{
             waitMove();
         }
     }
 
     @Override
-    public void waitMove() throws ServerUnavailableException, IOException {
-        //TODO: wait for move input
+    public void sendSwap(String line) throws ServerUnavailableException, IOException {
+        sendMessage(SWAP+DELIMITER+line);
+        waitMove();
     }
 
     @Override
-    public void doMove(int[] indices) throws ServerUnavailableException, IOException {
-        //TODO: send move input to server
+    public void doMove(String line) throws ServerUnavailableException, IOException {
+        sendMessage(MOVE + DELIMITER +line);
+        waitMove();
     }
+
+    @Override
+    public void waitMove() throws ServerUnavailableException, IOException {
+        String serverResponse = readLinesFromServer();
+        //TODO: finish making  a move
+
+    }
+
 
     @Override
     public void quit() throws ServerUnavailableException, IOException {
@@ -201,7 +209,7 @@ public class gameClient implements clientProtocol {
                 String serverResponse = readLinesFromServer();
                 String[] serverResponsesSplit = serverResponse.split(DELIMITER);
                 if (serverResponse.contains(GAMESTART)) {
-                    System.out.println("Game started");
+                    clientTUI.printMessage(START+END);
 
                     String[] split = serverResponse.split(DELIMITER);
 

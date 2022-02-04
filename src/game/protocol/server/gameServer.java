@@ -1,10 +1,15 @@
 package game.protocol.server;
 
+import game.Board;
 import game.Game;
+import game.Player;
 import game.Tile;
 import game.TileBag;
 import game.exceptions.ExitProgram;
+import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
+import game.exceptions.InvalidInputException;
+import game.exceptions.InvalidWordException;
 import game.exceptions.ServerUnavailableException;
 import game.protocol.protocols.serverProtocol;
 import java.io.IOException;
@@ -20,11 +25,11 @@ public class gameServer implements serverProtocol, Runnable{
 
     private ServerSocket sock;
     private int nextClientNumber; //number of  next client
-    private List<clientHandler> clients;
-    private List<String> clientNames;
+    private final List<clientHandler> clients;
+    private final List<String> clientNames;
     List<Tile> bag = TileBag.generateTiles(); //bag for the game, this server is able to handle only game at time so tile bag is only one
     public List<clientHandler> clientsReady;//name of clients ready to play, it 2 - start a game
-
+    public Game game;
 
     //tui
     private final serverTUI serverTUI;
@@ -87,7 +92,7 @@ public class gameServer implements serverProtocol, Runnable{
             clientsReady.remove(0);
             clientHandler p2 = clientsReady.get(0);
             clientsReady.remove(0);
-            Game game = new Game(p1, p2,bag);
+            this.game = new Game(p1, p2,bag);
             p1.createGame(game);
             p2.createGame(game);
         }
@@ -98,7 +103,7 @@ public class gameServer implements serverProtocol, Runnable{
     }
 
     @Override
-    public void sendTiles(clientHandler client) throws IOException, ServerUnavailableException {
+    public void sendTiles(clientHandler client) throws IOException {
         List<Tile> rack = client.getPlayer().getRack();
         String rackString= rack.get(0).getLetter();
         for(int i=1; i<rack.size();i++){
@@ -108,8 +113,32 @@ public class gameServer implements serverProtocol, Runnable{
     }
 
     @Override
-    public void doMove(int[] move,String word, String direction, String name) throws InvalidIndexException {
-
+    public void doMove(int x, int y, char[] letters, String direction, String name)
+        throws InvalidIndexException, ServerUnavailableException, IOException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException {
+        clientHandler[] clients = game.getClientPlayers();
+        clientHandler p1 = clients[0];
+        clientHandler p2 = clients[1];
+        Player currentPlayer;
+        clientHandler currentClient;
+        if (p1.name.equals(name)){
+             currentPlayer = p1.getPlayer();
+            currentClient = p1;
+        } else {
+            currentPlayer = p2.getPlayer();
+            currentClient = p1;
+        }
+        Board board = this.game.getBoard();
+       sendTiles(currentClient);
+        board = currentPlayer.playerMove(game.getBoard(),x, y, letters, direction);
+        if (game.gameOver()) {
+            Player winner = game.winner(p1.getPlayer(),p2.getPlayer());
+            String reason = "reason "; // TODO: GAME OVER REASON
+            //TODO: PLAYERS CLIENTS SEND GAME OVER
+        } else {
+            p1.sendMove(x, y,  letters, direction);
+            p2.sendMove(x, y,  letters, direction);
+        }
     }
 
     @Override
@@ -117,7 +146,7 @@ public class gameServer implements serverProtocol, Runnable{
         clientHandler p1 = clients.get(0);
         clientHandler p2 = clients.get(1);
             //TODO: finish\
-        // GAMEOVER;<endType(QWINNER, DRAW, STOP)>;<names>;<points>!
+        // GAMEOVER;<endType(WINNER, DRAW, STOP)>;<names>;<points>!
        p1.sendMessage(GAMEOVER);
        p2.sendMessage(GAMEOVER);
     }
@@ -133,7 +162,6 @@ public class gameServer implements serverProtocol, Runnable{
         boolean openNewSocket = true;
         while (openNewSocket) {
             try {
-                // Sets up the hotel application
                 setup();
 
                 while (true) {

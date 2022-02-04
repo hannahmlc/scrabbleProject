@@ -2,7 +2,11 @@ package game.protocol.server;
 
 import game.*;
 import game.BoardView.boardPrint;
+import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
+import game.exceptions.InvalidInputException;
+import game.exceptions.InvalidWordException;
+import game.exceptions.ServerUnavailableException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -89,6 +93,9 @@ public class clientHandler implements Runnable {
                     gameServer.addClientsReady(this);
                 }
                 break;
+            case SWAP:
+                //TODO: finish swap
+                break;
             case MOVE:
                 if (parameter1 != null && parameter2!=null && parameter3!=null) {
                     //p1 - position (example: H8)
@@ -108,21 +115,16 @@ public class clientHandler implements Runnable {
 
 
                     //p2 - word
-                    String word;
-
+                    char[] letters = parameter2.toCharArray();
 
                     //p3 -direction ( ver/hor )
-                    String direction;
+                    String direction=parameter3;
 
-                    int[] move;
-
-                    }
                     try {
-                        gameServer.doMove(move,word,direction, name);
-                    } catch (InvalidIndexException error) {
+                        gameServer.doMove(x,y,letters,direction, name);
+                    } catch (InvalidIndexException | ServerUnavailableException | InvalidInputException | InvalidWordException | InvalidDirectionException error) {
                         sendMessage(ERROR + DELIMITER + error);
                     }
-
                 } else {
                     sendMessage(ERROR + DELIMITER + "incorrect index, you've lost your turn"+END);
                 }
@@ -138,7 +140,6 @@ public class clientHandler implements Runnable {
             Player[] player = game.getPlayers();
             String players = player[0].getName()+DELIMITER+player[1].getName();
             sendMessage(GAMESTART+DELIMITER+players+DELIMITER+boardFormat);
-
     }
 
 
@@ -148,7 +149,7 @@ public class clientHandler implements Runnable {
         try{
            line = in.readLine();
             while (line != null) {
-                System.out.println("[" + name + "] Incoming: " + line);
+                System.out.println( name + " : " + line);
                 handleCommands(line);
                 gameServer.createGame();
                 line = in.readLine();
@@ -170,5 +171,10 @@ public class clientHandler implements Runnable {
     public Player getPlayer(){
         return this.player;
     }
+
+    public  void  sendMove(int x, int y, char[] letters, String direction){
+
+    }
+
 
 }
