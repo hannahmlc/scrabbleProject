@@ -9,21 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ScoringTest {
-/*
-    @Test
-    public void calculateMoveScoreTest() {
-        Tile A = new Tile("A",1 );
-        Tile B = new Tile("B",3 );
-        Tile C = new Tile("C",5 );
-        List<Tile> tiles = new ArrayList<>();
-        tiles.add(A);
-        tiles.add(B);
-        tiles.add(C);
-        char[] Letters = {'A','B','C'};
-        int score = Scoring.calculateMoveScore(Letters, tiles);
-        assertEquals(score,9);
-    }
-    */
+
     @Test
     public void testLetterScore() {
         Tile A = new Tile("A",1 );

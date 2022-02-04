@@ -1,4 +1,4 @@
-package game.protocol;
+package game.protocol.protocols;
 
 public class commands {
 

@@ -1,4 +1,4 @@
-package game.protocol;
+package game.protocol.protocols;
 
 import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
@@ -29,11 +29,11 @@ public interface clientProtocol {
     //Handles server-client handshake
     // 1. Client sends command.HELLO to server
     // 2. Server returns one line containing commands.HELLO
-    public void doHello() throws ServerUnavailableException;
+    public void doHello() throws ServerUnavailableException, IOException;
 
 
   //client joins with username, join;name
-    void join() throws ServerUnavailableException;
+    void join() throws ServerUnavailableException, IOException;
 
     //client informs about being ready: ready
     void ready() throws ServerUnavailableException, IOException;
@@ -48,10 +48,10 @@ public interface clientProtocol {
 
     //Send moves from user to server, waitForMove().
     //call clearConnection().
-    void sendMove(int[] indices) throws ServerUnavailableException, IOException;
+    void doMove(int[] indices) throws ServerUnavailableException, IOException;
 
     //send message to server client will quit the game
-    void quit() throws ServerUnavailableException;
+    void quit() throws ServerUnavailableException, IOException;
 
     //close connection after client quits/exit
     void closeConnection();

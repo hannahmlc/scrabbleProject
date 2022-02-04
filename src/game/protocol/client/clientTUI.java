@@ -1,6 +1,6 @@
 package game.protocol.client;
 
-import static game.protocol.commands.*;
+import static game.protocol.protocols.commands.*;
 
 import game.exceptions.*;
 import java.io.IOException;

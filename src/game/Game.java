@@ -4,6 +4,7 @@ import game.exceptions.InvalidDirectionException;
 import game.exceptions.InvalidIndexException;
 import game.exceptions.InvalidInputException;
 import game.exceptions.InvalidWordException;
+import game.protocol.server.clientHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Game implements game.interfaces.Game {
     List<Tile> bag = new ArrayList<>(100);// = TileBag.generateTiles();
     private Board board;
     private final Player[] players;
+    private clientHandler[] clientPlayers;
     int currentPlayer;
 
     public Game(Player p1, Player p2, List<Tile> bag) {
@@ -27,6 +29,14 @@ public class Game implements game.interfaces.Game {
         p2.addLetters(bag);
         //currentPlayer = (int)(Math.random() * 1);
     }
+
+    public Game(clientHandler p1, clientHandler p2,List<Tile> bag) {
+        this(p1.player, p2.player,bag);
+        clientPlayers = new clientHandler[NUMBER_PLAYERS];
+        clientPlayers[0]=p1;
+        clientPlayers[1]=p2;
+    }
+
 
     @Override
     public void start() throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
@@ -42,12 +52,12 @@ public class Game implements game.interfaces.Game {
         //board.printBoard();
         while (!gameOver()){
             currentPlayer = currentPlayer % 2; // player can only be 1(index 0) or 2 (index 1)
-            board.printBoard();
+            System.out.println(board.printBoard());
             this.board = players[currentPlayer].playerMove(board);
             players[currentPlayer].addLetters(bag); // add letters after move
             currentPlayer++; // change player
         }
-        board.printBoard(); // print updated board
+        System.out.println(board.printBoard()); // print updated board
         printResult(players[0],players[1]);
     }
 
@@ -59,6 +69,11 @@ public class Game implements game.interfaces.Game {
     @Override
     public Player[] getPlayers() {
         return this.players;
+    }
+
+    @Override
+    public clientHandler[] getClientPlayers() {
+        return this.clientPlayers;
     }
 
     /**
@@ -117,6 +132,10 @@ public class Game implements game.interfaces.Game {
         return player.getScore() - Scoring.unplacedLettersSum(player);
     }
 
+    @Override
+    public Player getCurrentPlayer(){
+        return players[currentPlayer];
+    }
 
 
 }

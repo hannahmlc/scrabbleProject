@@ -95,7 +95,7 @@ public class Board implements game.interfaces.Board {
      * @ensures the values of all fields of the copy match the ones of this Board
      */
     @Override
-    public game.interfaces.Board deepCopy() {
+    public Board deepCopy() {
         Board deepCopy = new Board();
         for(int i = 0; i<DIM;i++){
             for(int j=0; j<DIM;j++){
@@ -124,7 +124,7 @@ public class Board implements game.interfaces.Board {
      */
     @Override
     public String printBoard() {
-        System.out.print(boardFormat.formatBoard(this));
+       // System.out.print(boardFormat.formatBoard(this));
         return boardFormat.formatBoard(this);
     }
 

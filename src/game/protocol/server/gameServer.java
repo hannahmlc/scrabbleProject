@@ -1,8 +1,12 @@
 package game.protocol.server;
 
+import game.Game;
+import game.Tile;
+import game.TileBag;
 import game.exceptions.ExitProgram;
+import game.exceptions.InvalidIndexException;
 import game.exceptions.ServerUnavailableException;
-import game.protocol.serverProtocol;
+import game.protocol.protocols.serverProtocol;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -10,7 +14,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import utils.ANSI;
-import static game.protocol.commands.*;
+import static game.protocol.protocols.commands.*;
 
 public class gameServer implements serverProtocol, Runnable{
 
@@ -18,8 +22,9 @@ public class gameServer implements serverProtocol, Runnable{
     private int nextClientNumber; //number of  next client
     private List<clientHandler> clients;
     private List<String> clientNames;
+    List<Tile> bag = TileBag.generateTiles(); //bag for the game, this server is able to handle only game at time so tile bag is only one
+    public List<clientHandler> clientsReady;//name of clients ready to play, it 2 - start a game
 
-    private final List<clientHandler> queue; // queue where player waits till other player connect to start game
 
     //tui
     private final serverTUI serverTUI;
@@ -28,7 +33,7 @@ public class gameServer implements serverProtocol, Runnable{
         serverTUI = new serverTUI(this);
         clients = new ArrayList<>();
         clientNames = new ArrayList<>();
-        queue = new ArrayList<>();
+        clientsReady = new ArrayList<>();
         nextClientNumber = 1;
     }
 
@@ -57,7 +62,7 @@ public class gameServer implements serverProtocol, Runnable{
 
     @Override
     public void welcome(clientHandler client) {
-        serverTUI.printMessage(WELCOME + client.name+END);
+        serverTUI.printMessage(WELCOME +DELIMITER + client.name+END);
     }
 
     @Override
@@ -77,22 +82,44 @@ public class gameServer implements serverProtocol, Runnable{
 
     @Override
     public void createGame() throws IOException{
+        if(clientsReady.size()>=2){
+            clientHandler p1 = clientsReady.get(0);
+            clientsReady.remove(0);
+            clientHandler p2 = clientsReady.get(0);
+            clientsReady.remove(0);
+            Game game = new Game(p1, p2,bag);
+            p1.createGame(game);
+            p2.createGame(game);
+        }
+    }
+
+    public void addClientsReady(clientHandler client){
+        this.clientsReady.add(client);
+    }
+
+    @Override
+    public void sendTiles(clientHandler client) throws IOException, ServerUnavailableException {
+        List<Tile> rack = client.getPlayer().getRack();
+        String rackString= rack.get(0).getLetter();
+        for(int i=1; i<rack.size();i++){
+            rackString+= DELIMITER+rack.get(i).getLetter();
+        }
+        client.sendMessage(TILES+DELIMITER+rackString);
+    }
+
+    @Override
+    public void doMove(int[] move,String word, String direction, String name) throws InvalidIndexException {
 
     }
 
     @Override
-    public void sendTiles() throws IOException, ServerUnavailableException {
-
-    }
-
-    @Override
-    public void doMove() {
-
-    }
-
-    @Override
-    public void endGame() {
-
+    public void endGame() throws IOException {
+        clientHandler p1 = clients.get(0);
+        clientHandler p2 = clients.get(1);
+            //TODO: finish\
+        // GAMEOVER;<endType(QWINNER, DRAW, STOP)>;<names>;<points>!
+       p1.sendMessage(GAMEOVER);
+       p2.sendMessage(GAMEOVER);
     }
 
     public static void main(String[] args) {

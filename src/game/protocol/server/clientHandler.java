@@ -1,19 +1,23 @@
 package game.protocol.server;
 
-import game.exceptions.ServerUnavailableException;
+import game.*;
+import game.BoardView.boardPrint;
+import game.exceptions.InvalidIndexException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import static game.protocol.commands.*;
+import utils.inputToPosition;
+
+import static game.protocol.protocols.commands.*;
 
 public class clientHandler implements Runnable {
 
     private gameServer gameServer; // server
     public String name; //name of client
-
+    public Player player;
     private BufferedReader in;
     private BufferedWriter out;
     private Socket sock;
@@ -26,21 +30,21 @@ public class clientHandler implements Runnable {
             this.sock = sock;
             this.gameServer = server;
             this.name = name;
+            this.player = new Player(name);
         } catch (IOException e) {
             shutdown();
         }
     }
 
     private void shutdown() {
-        System.out.println("Shut down"+END);
         try {
+            sock.close();
             in.close();
             out.close();
-            sock.close();
+            gameServer.removeClient(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        gameServer.removeClient(this);
     }
 
 
@@ -62,38 +66,80 @@ public class clientHandler implements Runnable {
 
         switch (command) {
             case QUIT:
-                out.write("Shutdown");
-                break;
-            case WELCOME:
-                out.write(WELCOME + DELIMITER+name);
+                sendMessage("Shutdown");
+                shutdown();
                 break;
             case HELLO:
-                out.write(WELCOME + DELIMITER+name);
+                sendMessage(WELCOME + DELIMITER+name+END);
                 break;
             case JOIN:
                 if (parameter1 == null) {
-                    out.write(ERROR+DELIMITER+"provide username"+END);
-                    out.newLine();
-                    out.flush();
+                    sendMessage(ERROR+DELIMITER+"provide username"+END);
                 }else if (gameServer.join(parameter1)) {
                         name = parameter1;
                         gameServer.welcome(this);
-                        out.write(WELCOME+DELIMITER+parameter1+END);
-                        out.newLine();
-                        out.flush();
+                        sendMessage(WELCOME+DELIMITER+parameter1+END);
                     } else {
-                        out.write(ERROR+DELIMITER+"username taken"+END);
-                        out.newLine();
-                        out.flush();
+                        sendMessage(ERROR+DELIMITER+"username taken"+END);
+
                     }
                 break;
+            case READY:
+                if (!gameServer.clientsReady.contains(this)){
+                    gameServer.addClientsReady(this);
+                }
+                break;
+            case MOVE:
+                if (parameter1 != null && parameter2!=null && parameter3!=null) {
+                    //p1 - position (example: H8)
+                    int x;
+                    char charY = parameter1.charAt(0);
+                    int y =  inputToPosition.getPositionFromLetter(charY);
+
+                    if (parameter1.length()>2){
+                        String StringX = parameter1.substring(1);
+                        x = inputToPosition.getPositionFromString(StringX);
+                    }else{
+                        char charX = parameter1.charAt(1);
+                        x = inputToPosition.getPositionFromNumber(charX);
+                    }
+                    x = x- 1;//array indexing
+                    y = y - 1;//array indexing
+
+
+                    //p2 - word
+                    String word;
+
+
+                    //p3 -direction ( ver/hor )
+                    String direction;
+
+                    int[] move;
+
+                    }
+                    try {
+                        gameServer.doMove(move,word,direction, name);
+                    } catch (InvalidIndexException error) {
+                        sendMessage(ERROR + DELIMITER + error);
+                    }
+
+                } else {
+                    sendMessage(ERROR + DELIMITER + "incorrect index, you've lost your turn"+END);
+                }
+                break;
             default:
-                out.write(ERROR+DELIMITER+"incorrect command");
-                out.newLine();
-                out.flush();
+                sendMessage(ERROR+DELIMITER+"Incorrect command, you've lost your turn"+END);
         }
     }
 
+    public void createGame(Game game) throws IOException{
+            Board boardCopy = game.getBoard().deepCopy();
+            String boardFormat = boardPrint.formatBoard(boardCopy);
+            Player[] player = game.getPlayers();
+            String players = player[0].getName()+DELIMITER+player[1].getName();
+            sendMessage(GAMESTART+DELIMITER+players+DELIMITER+boardFormat);
+
+    }
 
 
     @Override
@@ -104,8 +150,6 @@ public class clientHandler implements Runnable {
             while (line != null) {
                 System.out.println("[" + name + "] Incoming: " + line);
                 handleCommands(line);
-                //new game
-                //TODO: rechek if it shouldn't be in handle commands
                 gameServer.createGame();
                 line = in.readLine();
             }
@@ -116,4 +160,15 @@ public class clientHandler implements Runnable {
         }
 
     }
+
+    public void sendMessage(String msg) throws IOException {
+        out.write(msg);
+        out.newLine();
+        out.flush();
+    }
+
+    public Player getPlayer(){
+        return this.player;
+    }
+
 }

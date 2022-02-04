@@ -1,14 +1,15 @@
 package game.protocol.client;
 
-import game.Board;
 import game.Game;
 import game.Player;
 import game.Tile;
 import game.TileBag;
 import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
-import game.protocol.*;
-import static game.protocol.commands.*;
+
+import static game.protocol.protocols.commands.*;
+
+import game.protocol.protocols.clientProtocol;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -97,9 +98,20 @@ public class gameClient implements clientProtocol {
     }
 
     @Override
-    public String readLinesFromServer() throws ServerUnavailableException {
+    public String readLinesFromServer() throws ServerUnavailableException, IOException {
         if (in != null) {
-            String oneLine ="";
+            try {
+                String line = in.readLine();
+                return line;
+            } catch (IOException e) {
+                throw new ServerUnavailableException("Could not read from server (no response form server)");
+            }
+        } else {
+            throw new ServerUnavailableException("Could not read from server (no response form server)");
+        }
+
+       /* if (in != null) {
+            String oneLine =in.readLine();
             try {
                 for (String serverLine = in.readLine(); serverLine != null && !serverLine.equals(END); serverLine = in.readLine()) {
                     oneLine = oneLine + serverLine + DELIMITER;
@@ -110,28 +122,33 @@ public class gameClient implements clientProtocol {
             }
         }else {
             throw new ServerUnavailableException("Could not read from server (no response form server)");
-        }
+        }*/
     }
 
     @Override
-    public void doHello() throws ServerUnavailableException {
+    public void doHello() throws ServerUnavailableException, IOException {
         sendMessage(HELLO + DELIMITER + "Client " + this.name + END); //WELCOME;<clientName>;<names>;!
         clientTUI.printMessage(readLinesFromServer());
     }
 
     @Override
-    public void join() throws ServerUnavailableException {
+    public void join() throws ServerUnavailableException, IOException {
         String name = clientTUI.getString("Provide username: ");
         sendMessage(JOIN + DELIMITER + name + END);
-        //TODO: username taken(2 cant be the same) handle
+        String response = readLinesFromServer();
+        String join[] =response.split(DELIMITER);
+      if(join[0].equals(ERROR)){
+          clientTUI.printMessage(join[1]);
+          join();
+       } else{
+           clientTUI.printMessage(response);
+        }
         this.name = name;
-        clientTUI.printMessage(readLinesFromServer());
-
     }
 
     @Override
     public void ready() throws ServerUnavailableException, IOException {
-        sendMessage(READY+END);
+        sendMessage(READY+DELIMITER+END);
         lookingForPlayers = !lookingForPlayers;
         if (lookingForPlayers) {
             clientTUI.printMessage("Waiting for another player to start a a game....");
@@ -141,7 +158,11 @@ public class gameClient implements clientProtocol {
 
     @Override
     public void play() throws ServerUnavailableException, IOException {
-        //TODO: play the game
+        if(game.getCurrentPlayer().getName().equals(name)){
+
+        }else{
+            waitMove();
+        }
     }
 
     @Override
@@ -150,12 +171,12 @@ public class gameClient implements clientProtocol {
     }
 
     @Override
-    public void sendMove(int[] indices) throws ServerUnavailableException, IOException {
+    public void doMove(int[] indices) throws ServerUnavailableException, IOException {
         //TODO: send move input to server
     }
 
     @Override
-    public void quit() throws ServerUnavailableException {
+    public void quit() throws ServerUnavailableException, IOException {
         sendMessage(QUIT+END);
         clientTUI.printMessage(readLinesFromServer());
         closeConnection();
@@ -176,25 +197,25 @@ public class gameClient implements clientProtocol {
     @Override
     public void waitForPlayers() throws IOException, ServerUnavailableException {
         while (lookingForPlayers) {
-            if (in.ready()) {
-                String severOutput = readLinesFromServer();
-                if (severOutput.contains(GAMESTART)) {
-                    System.out.println("Game have started");
 
-                    String[] split = severOutput.split(DELIMITER);
+                String serverResponse = readLinesFromServer();
+                String[] serverResponsesSplit = serverResponse.split(DELIMITER);
+                if (serverResponse.contains(GAMESTART)) {
+                    System.out.println("Game started");
+
+                    String[] split = serverResponse.split(DELIMITER);
 
 
-                    Player player1 = new Player(split[1]);
-                    Player player2 = new Player(split[2]);
+                    Player p1 = new Player(split[1]);
+                    Player p2 = new Player(split[2]);
                     List<Tile> bagOfTiles = TileBag.generateTiles();
-//TODO: finsih game creation
-                    game = new Game(player1, player2,bagOfTiles);
-
+                    game = new Game(p1, p2,bagOfTiles);
                     clientTUI.printMessage(game.getBoard().printBoard());
+
                     lookingForPlayers = false;
                     play();
                 }
-            }
+
         }
     }
 
