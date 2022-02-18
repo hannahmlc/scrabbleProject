@@ -35,7 +35,6 @@ public class clientHandler implements Runnable {
             this.sock = sock;
             this.gameServer = server;
             this.name = name;
-            this.player = new Player(name);
         } catch (IOException e) {
             shutdown();
         }
@@ -107,6 +106,7 @@ public class clientHandler implements Runnable {
                     sendMessage(ERROR+DELIMITER+"provide username"+END);
                 }else if (gameServer.join(parameter1)) {
                         name = parameter1;
+                        this.player = new Player(name);
                         gameServer.welcome(this);
                         sendMessage(WELCOME+DELIMITER+parameter1+END);
                     } else {
@@ -121,6 +121,7 @@ public class clientHandler implements Runnable {
                 break;
             case SWAP:
                 //TODO: finish swap
+                sendMessage(SWAP);
                 break;
             case MOVE:
                 if (parameter1 != null && parameter2!=null && parameter3!=null) {

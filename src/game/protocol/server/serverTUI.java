@@ -1,5 +1,7 @@
 package game.protocol.server;
 
+import static game.protocol.protocols.commands.*;
+
 import game.protocol.client.gameClient;
 import java.util.Scanner;
 
@@ -36,5 +38,6 @@ public class serverTUI {
 
     public void handleError(String error) {
         //TODO: handle ERRORS prompts
+        printMessage(ERROR + error + END);
     }
 }

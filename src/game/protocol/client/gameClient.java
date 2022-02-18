@@ -26,11 +26,13 @@ import utils.inputToPosition;
 public class gameClient implements clientProtocol {
 
     private static Game game;
+    List<Tile> bagOfTiles;
     private boolean lookingForPlayers = false;//waiting for ready from both players to start game
 
     private Socket sock;
     private BufferedReader in;
     private BufferedWriter out;
+
 
     // tui
     private final clientTUI clientTUI;
@@ -163,13 +165,13 @@ public class gameClient implements clientProtocol {
 
                 String[] split = serverResponse.split(DELIMITER);
 
-
                 Player p1 = new Player(split[1]);
                 Player p2 = new Player(split[2]);
-                List<Tile> bagOfTiles = TileBag.generateTiles();
+                bagOfTiles = TileBag.generateTiles();
                 game = new Game(p1, p2,bagOfTiles);
                 clientTUI.printMessage(game.getBoard().printBoard());
-
+                //clientTUI.printMessage(serverResponse + "reasponse");
+                clientTUI.printMessage("GAME STARTED: player1: " + p1.getName() + "  player2: " +p2.getName());
                 lookingForPlayers = false;
                 play();
             }
@@ -181,7 +183,7 @@ public class gameClient implements clientProtocol {
     public void play() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
         String currentPlayer = game.getCurrentPlayer().getName();
-        if(currentPlayer.equals(name)){ //check if player making move is this client
+        if(currentPlayer.contains(name)){ //check if player making move is this client
             String line = clientTUI.getString("example move: MOVE;H8;RICE;VER || SWAP;ABCD ||SWAP; (swap without letter is considered skipping a move)");
             String[] split = line.split(DELIMITER,4);
             if (split[0].equals(MOVE) && split.length >= 3) {
@@ -219,7 +221,7 @@ public class gameClient implements clientProtocol {
         InvalidWordException, InvalidDirectionException {
 
         String serverResponse = readLinesFromServer();
-        System.out.println(serverResponse);
+        System.out.println("SERVER RESPONSE  " + serverResponse + END);
         if (serverResponse.contains(ERROR)) {
             clientTUI.printMessage(serverResponse.replace(ERROR, ""));
             play();
