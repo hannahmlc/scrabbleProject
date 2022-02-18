@@ -137,5 +137,8 @@ public class Game implements game.interfaces.Game {
         return players[currentPlayer];
     }
 
+    public void setBoard(Board board){
+        this.board = board;
+    }
 
 }

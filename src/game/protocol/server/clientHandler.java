@@ -22,6 +22,7 @@ public class clientHandler implements Runnable {
     private gameServer gameServer; // server
     public String name; //name of client
     public Player player;
+
     private BufferedReader in;
     private BufferedWriter out;
     private Socket sock;
@@ -40,12 +41,37 @@ public class clientHandler implements Runnable {
         }
     }
 
+    @Override
+    public void run() {
+        String line;
+        try{
+            line = in.readLine();
+            while (line != null) {
+                System.out.println( name + " : " + line);
+                handleCommands(line);
+                gameServer.createGame();
+                line = in.readLine();
+            }
+            shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+            shutdown();
+        }
+
+    }
+
     private void shutdown() {
+        System.out.println("> [" + name + "] Shutting down.");
         try {
-            sock.close();
             in.close();
             out.close();
-            gameServer.removeClient(this);
+            sock.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gameServer.removeClient(this);
+        try {
+            gameServer.endGame();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,11 +138,8 @@ public class clientHandler implements Runnable {
                     }
                     x = x- 1;//array indexing
                     y = y - 1;//array indexing
-
-
                     //p2 - word
                     char[] letters = parameter2.toCharArray();
-
                     //p3 -direction ( ver/hor )
                     String direction=parameter3;
 
@@ -126,11 +149,11 @@ public class clientHandler implements Runnable {
                         sendMessage(ERROR + DELIMITER + error);
                     }
                 } else {
-                    sendMessage(ERROR + DELIMITER + "incorrect index, you've lost your turn"+END);
+                    sendMessage(ERROR + DELIMITER + "incorrect index, you've lost your turn");
                 }
                 break;
             default:
-                sendMessage(ERROR+DELIMITER+"Incorrect command, you've lost your turn"+END);
+                sendMessage(ERROR+DELIMITER+"Incorrect command, you've lost your turn");
         }
     }
 
@@ -143,24 +166,7 @@ public class clientHandler implements Runnable {
     }
 
 
-    @Override
-    public void run() {
-        String line;
-        try{
-           line = in.readLine();
-            while (line != null) {
-                System.out.println( name + " : " + line);
-                handleCommands(line);
-                gameServer.createGame();
-                line = in.readLine();
-            }
-            shutdown();
-        } catch (IOException e) {
-            e.printStackTrace();
-            shutdown();
-        }
 
-    }
 
     public void sendMessage(String msg) throws IOException {
         out.write(msg);
@@ -172,8 +178,9 @@ public class clientHandler implements Runnable {
         return this.player;
     }
 
-    public  void  sendMove(int x, int y, char[] letters, String direction){
-
+    public  void  sendMove(int x, int y, char[] letters, String direction) throws IOException {
+        String line = MOVE+ x + DELIMITER + y + DELIMITER + letters.toString() + DELIMITER + direction;
+        sendMessage(line);
     }
 
 

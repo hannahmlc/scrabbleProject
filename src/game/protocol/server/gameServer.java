@@ -88,9 +88,13 @@ public class gameServer implements serverProtocol, Runnable{
     @Override
     public void createGame() throws IOException{
         if(clientsReady.size()>=2){
+
             clientHandler p1 = clientsReady.get(0);
+            clients.add(clientsReady.get(0));
             clientsReady.remove(0);
+
             clientHandler p2 = clientsReady.get(0);
+            clients.add(clientsReady.get(0));
             clientsReady.remove(0);
             this.game = new Game(p1, p2,bag);
             p1.createGame(game);
@@ -116,11 +120,13 @@ public class gameServer implements serverProtocol, Runnable{
     public void doMove(int x, int y, char[] letters, String direction, String name)
         throws InvalidIndexException, ServerUnavailableException, IOException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
+
         clientHandler[] clients = game.getClientPlayers();
         clientHandler p1 = clients[0];
         clientHandler p2 = clients[1];
         Player currentPlayer;
         clientHandler currentClient;
+
         if (p1.name.equals(name)){
              currentPlayer = p1.getPlayer();
             currentClient = p1;
@@ -143,12 +149,18 @@ public class gameServer implements serverProtocol, Runnable{
 
     @Override
     public void endGame() throws IOException {
-        clientHandler p1 = clients.get(0);
-        clientHandler p2 = clients.get(1);
+        if(clientsReady.size()>=2){
+            clientHandler p1 = clients.get(0);
+            clientHandler p2 = clients.get(1);
             //TODO: finish\
-        // GAMEOVER;<endType(WINNER, DRAW, STOP)>;<names>;<points>!
-       p1.sendMessage(GAMEOVER);
-       p2.sendMessage(GAMEOVER);
+            // GAMEOVER;<endType(WINNER, DRAW, STOP)>;<names>;<points>!
+            p1.sendMessage(GAMEOVER);
+            p2.sendMessage(GAMEOVER);
+        }
+        else {
+            serverTUI.printMessage(ERROR);
+        }
+
     }
 
     public static void main(String[] args) {
@@ -179,7 +191,6 @@ public class gameServer implements serverProtocol, Runnable{
             } catch (IOException e) {
                 System.out.println("A server IO error occurred: "
                     + e.getMessage());
-
                 if (!serverTUI.getBoolean("Do you want to open a new socket?")) { //yes / no
                     openNewSocket = false;
                 }

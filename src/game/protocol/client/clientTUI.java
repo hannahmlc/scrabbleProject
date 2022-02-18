@@ -15,24 +15,28 @@ public class clientTUI {
         gameClient = client;
     }
 
-    public void start() throws ServerUnavailableException, IOException {
+    public void start() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException {
         String input = getString("Write: READY to start a game or QUIT to exit ");
-        handleUserInput(input+END);
+        handleUserInput(input);
     }
 
-    private void handleUserInput(String input) throws ServerUnavailableException, IOException {
+    private void handleUserInput(String input)
+        throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException {
 
         switch (input) {
-            case QUIT+END:
+            case QUIT:
                 gameClient.quit();
                 break;
-            case READY+END:
+            case READY:
                 gameClient.ready();
                break;
             default:
                 printMessage("Unknown command");
                 start();
         }
+
     }
 
     public void printMessage(String message) {

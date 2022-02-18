@@ -1,6 +1,10 @@
 package game.protocol.protocols;
 
 import game.exceptions.ExitProgram;
+import game.exceptions.InvalidDirectionException;
+import game.exceptions.InvalidIndexException;
+import game.exceptions.InvalidInputException;
+import game.exceptions.InvalidWordException;
 import game.exceptions.ServerUnavailableException;
 import java.io.IOException;
 
@@ -36,21 +40,28 @@ public interface clientProtocol {
     void join() throws ServerUnavailableException, IOException;
 
     //client informs about being ready: ready
-    void ready() throws ServerUnavailableException, IOException;
+    void ready() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 
     // Print board.
     // Checks who make first move,waitForMoveResponse(), call sendMove().
-    void play() throws ServerUnavailableException, IOException;
+    void play() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 
-    void sendSwap(String line) throws ServerUnavailableException, IOException;
+    void sendSwap(String line)
+        throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 
     // Wait for MOVE;<positions>;<letters>;<directions>!
     //or SWAP;<letters/none>!
-    void waitMove() throws ServerUnavailableException, IOException;
+    void waitMove() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 
     //Send moves from user to server, waitForMove().
     //call clearConnection().
-    void doMove(String move) throws ServerUnavailableException, IOException;
+    void doMove(String move)
+        throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 
     //send message to server client will quit the game
     void quit() throws ServerUnavailableException, IOException;
@@ -59,5 +70,6 @@ public interface clientProtocol {
     void closeConnection();
 
     //wait for both player to type ready top start game
-    void waitForPlayers() throws IOException, ServerUnavailableException;
+    void waitForPlayers() throws IOException, ServerUnavailableException, InvalidIndexException, InvalidInputException,
+        InvalidWordException, InvalidDirectionException;
 }
