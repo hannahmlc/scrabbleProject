@@ -183,7 +183,7 @@ public class gameClient implements clientProtocol {
     @Override
     public void play() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
-
+        game.setCurrentPlayer();
         Player currentPlayer = game.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
         if(currentPlayerName.contains(name)){ //check if player making move is this client
@@ -200,6 +200,7 @@ public class gameClient implements clientProtocol {
                 clientTUI.printMessage("ERROR, wrong command");
                 waitMove();
             }
+             // change player
         }else{
             clientTUI.printMessage("other player is making a move");;
             waitMove();

@@ -141,4 +141,9 @@ public class Game implements game.interfaces.Game {
         this.board = board;
     }
 
+    public void setCurrentPlayer(){
+       currentPlayer = (currentPlayer+1) % 2;
+
+    }
+
 }
