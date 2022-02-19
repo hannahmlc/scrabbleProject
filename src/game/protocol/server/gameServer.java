@@ -117,7 +117,7 @@ public class gameServer implements serverProtocol, Runnable{
     }
 
     @Override
-    public void doMove(int x, int y, char[] letters, String direction, String name)
+    public void doMove(int x, int y, String letters, String direction, String name)
         throws InvalidIndexException, ServerUnavailableException, IOException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
 
@@ -135,8 +135,15 @@ public class gameServer implements serverProtocol, Runnable{
             currentClient = p1;
         }
         Board board = this.game.getBoard();
-       sendTiles(currentClient);
-        board = currentPlayer.playerMove(game.getBoard(),x, y, letters, direction);
+       //sendTiles(currentClient);
+        board = currentPlayer.playerMove(board,x, y, letters, direction);
+        System.out.println(board.printBoard()); //CHECK IF BOARD IS ACTUALLY changed //todo: GO BACK, AFTER CHECK SERVER RECIFES FORM PLAYER MOVE INGO CORRECTLY
+
+        //todo: GAMEOVER IS BEING IGNORED GAME LAST FOREVER
+        p1.sendMove(x, y,  letters, direction);
+        p2.sendMove(x, y,  letters, direction);
+
+        /*
         if (game.gameOver()) {
             Player winner = game.winner(p1.getPlayer(),p2.getPlayer());
             String reason = "reason "; // TODO: GAME OVER REASON
@@ -144,7 +151,8 @@ public class gameServer implements serverProtocol, Runnable{
         } else {
             p1.sendMove(x, y,  letters, direction);
             p2.sendMove(x, y,  letters, direction);
-        }
+        }*/
+
     }
 
     @Override

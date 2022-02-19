@@ -34,7 +34,7 @@ public interface serverProtocol {
     // check if game over:  yes- close game / no - update board
     // not ok : sends error message to client
 
-    void doMove(int x, int y, char[] letters, String direction, String name)
+    void doMove(int x, int y, String letters, String direction, String name)
         throws InvalidIndexException, ServerUnavailableException, IOException, InvalidInputException,
         InvalidWordException, InvalidDirectionException;
 

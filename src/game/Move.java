@@ -33,9 +33,9 @@ public class Move {
         }
     }
 
-    public static void makeMove(Board board, Player player, int x, int y, char[] letters, String direction)
+    public static void makeMove(Board board, Player player, int x, int y, String letters, String direction)
         throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
-        String word = letters.toString();
+        String word = letters;
 
         //TODO: fix so that it counts letters already placed before as word
         if (!board.isValidWord(word)) {
@@ -47,16 +47,16 @@ public class Move {
             }
             else{
                 if(direction.equals("HOR")){
-                    board.placeHorizontally(x,y,letters);
-                    addScoreHOR(player,letters,x,y,board);
+                    board.placeHorizontally(x,y,letters.toCharArray());
+                    //addScoreHOR(player,letters.toCharArray(),x,y,board);
                 } else if(direction.equals("VER")){
-                    board.placeVertically(x,y,letters);
-                    addScoreVER(player,letters,x,y,board);
+                    board.placeVertically(x,y,letters.toCharArray());
+                    //addScoreVER(player,letters.toCharArray(),x,y,board);
                 } else{
                     System.out.println(new InvalidDirectionException().getMessage());
                 }
             }
-            player.removeLetters(player.getRack(),letters);
+            //player.removeLetters(player.getRack(),letters.toCharArray());
         }
     }
 

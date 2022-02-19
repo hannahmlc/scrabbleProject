@@ -98,7 +98,7 @@ public class Player implements game.interfaces.Player {
     }
 
 
-    public Board playerMove(Board board,int x, int y, char[] letters, String direction) throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
+    public Board playerMove(Board board,int x, int y, String letters, String direction) throws InvalidInputException, InvalidIndexException, InvalidWordException, InvalidDirectionException {
         Move.makeMove(board, this, x, y, letters, direction);
         return board;
     }

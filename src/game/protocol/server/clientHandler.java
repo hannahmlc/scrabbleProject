@@ -85,7 +85,6 @@ public class clientHandler implements Runnable {
         String parameter2 = null;
         String parameter3 = null;
         System.out.println("lineee " +message);
-        System.out.println("p1 " + command + "p1 " + parameter1 + "p1 " + parameter2 +"p1 " + parameter3);
         out.flush();
         if (split.length >= 2) {
             parameter1 = split[1];
@@ -95,7 +94,6 @@ public class clientHandler implements Runnable {
                 parameter3 = split[3];
             }
         }
-
         switch (command) {
             case QUIT:
                 sendMessage("Shutdown");
@@ -142,8 +140,9 @@ public class clientHandler implements Runnable {
                     }
                     x = x- 1;//array indexing
                     y = y - 1;//array indexing
+
                     //p2 - word
-                    char[] letters = parameter2.toCharArray();
+                    String letters = parameter2;
                     //p3 -direction ( ver/hor )
                     String direction=parameter3;
 
@@ -166,7 +165,7 @@ public class clientHandler implements Runnable {
             String boardFormat = game.getBoard().printBoard(); //todo: CANT SEND FULL BOARD AS LINE
             Player[] player = game.getPlayers();
             String players = player[0].getName()+DELIMITER+player[1].getName();
-            sendMessage(GAMESTART+DELIMITER+players+DELIMITER+boardFormat);
+            sendMessage(GAMESTART+DELIMITER+players);
     }
 
 
@@ -182,8 +181,8 @@ public class clientHandler implements Runnable {
         return this.player;
     }
 
-    public  void  sendMove(int x, int y, char[] letters, String direction) throws IOException {
-        String line = MOVE+ x + DELIMITER + y + DELIMITER + letters.toString() + DELIMITER + direction;
+    public  void  sendMove(int x, int y, String letters, String direction) throws IOException {
+        String line = MOVE + DELIMITER + x + DELIMITER + y + DELIMITER + letters + DELIMITER + direction;
         sendMessage(line);
     }
 

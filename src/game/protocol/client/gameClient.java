@@ -246,8 +246,7 @@ public class gameClient implements clientProtocol {
                 }
                 x = x- 1;//array indexing
                 y = y - 1;//array indexing
-
-                char[] letters = split[2].toCharArray();
+                String letters = split[2];
                 String direction =split[3];
                 try {
                     Board board = game.getCurrentPlayer().playerMove(game.getBoard(),x,y,letters,direction);
