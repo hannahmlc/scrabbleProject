@@ -29,7 +29,7 @@ public interface serverProtocol {
     //send tiles to client
     void sendTiles(clientHandler client) throws IOException, ServerUnavailableException;
 
-    // receive move , looks for game, ddo the move
+    // receive move , looks for game, do the move
     // okay: save changes, check if gameOver
     // check if game over:  yes- close game / no - update board
     // not ok : sends error message to client

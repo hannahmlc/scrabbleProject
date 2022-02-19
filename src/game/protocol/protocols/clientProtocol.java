@@ -44,7 +44,7 @@ public interface clientProtocol {
         InvalidWordException, InvalidDirectionException;
 
     // Print board.
-    // Checks who make first move,waitForMoveResponse(), call sendMove().
+    // Checks who make first move,waitMove(), call sendMove().
     void play() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
         InvalidWordException, InvalidDirectionException;
 

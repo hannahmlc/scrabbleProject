@@ -47,6 +47,7 @@ public class clientHandler implements Runnable {
             line = in.readLine();
             while (line != null) {
                 System.out.println( name + " : " + line);
+                out.flush();
                 handleCommands(line);
                 gameServer.createGame();
                 line = in.readLine();
@@ -83,7 +84,9 @@ public class clientHandler implements Runnable {
         String parameter1 = null;
         String parameter2 = null;
         String parameter3 = null;
-
+        System.out.println("lineee " +message);
+        System.out.println("p1 " + command + "p1 " + parameter1 + "p1 " + parameter2 +"p1 " + parameter3);
+        out.flush();
         if (split.length >= 2) {
             parameter1 = split[1];
             if (split.length >= 3) {
@@ -160,7 +163,7 @@ public class clientHandler implements Runnable {
 
     public void createGame(Game game) throws IOException{
             Board boardCopy = game.getBoard().deepCopy();
-            String boardFormat = boardPrint.formatBoard(boardCopy);
+            String boardFormat = game.getBoard().printBoard(); //todo: CANT SEND FULL BOARD AS LINE
             Player[] player = game.getPlayers();
             String players = player[0].getName()+DELIMITER+player[1].getName();
             sendMessage(GAMESTART+DELIMITER+players+DELIMITER+boardFormat);

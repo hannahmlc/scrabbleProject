@@ -28,6 +28,7 @@ public class gameClient implements clientProtocol {
     private static Game game;
     List<Tile> bagOfTiles;
     private boolean lookingForPlayers = false;//waiting for ready from both players to start game
+    boolean waitMove = true;
 
     private Socket sock;
     private BufferedReader in;
@@ -182,17 +183,22 @@ public class gameClient implements clientProtocol {
     @Override
     public void play() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
-        String currentPlayer = game.getCurrentPlayer().getName();
-        if(currentPlayer.contains(name)){ //check if player making move is this client
+
+        Player currentPlayer = game.getCurrentPlayer();
+        String currentPlayerName = currentPlayer.getName();
+        if(currentPlayerName.contains(name)){ //check if player making move is this client
+            clientTUI.printMessage("Your letters: ");
+            clientTUI.printMessage(game.getCurrentPlayer().printRack(currentPlayer.getRack()));
             String line = clientTUI.getString("example move: MOVE;H8;RICE;VER || SWAP;ABCD ||SWAP; (swap without letter is considered skipping a move)");
             String[] split = line.split(DELIMITER,4);
             if (split[0].equals(MOVE) && split.length >= 3) {
+                clientTUI.printMessage("making move");
                 doMove(line);
             } else if (split[0].equals(SWAP) && split.length >= 3){
                 sendSwap(line);
             } else {
                 clientTUI.printMessage("ERROR, wrong command");
-                play();
+                waitMove();
             }
         }else{
             clientTUI.printMessage("other player is making a move");;
@@ -212,56 +218,58 @@ public class gameClient implements clientProtocol {
     public void doMove(String line)
         throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
-        sendMessage(MOVE + DELIMITER +line);
+        sendMessage(line);
         waitMove();
     }
 
     @Override
     public void waitMove() throws ServerUnavailableException, IOException, InvalidIndexException, InvalidInputException,
         InvalidWordException, InvalidDirectionException {
+            String serverResponse = readLinesFromServer();
+            //System.out.println("SERVER RESPONSE  " + serverResponse + END);
+            if (serverResponse.contains(ERROR)) {
+                clientTUI.printMessage(serverResponse.replace(ERROR, ""));
+                play();
+            } else if (serverResponse.contains(MOVE)) {
+                String[] split = serverResponse.split(DELIMITER, 4);
+                String parameter1 = split[1];
+                int x;
+                char charY = parameter1.charAt(0);
+                int y =  inputToPosition.getPositionFromLetter(charY);
 
-        String serverResponse = readLinesFromServer();
-        System.out.println("SERVER RESPONSE  " + serverResponse + END);
-        if (serverResponse.contains(ERROR)) {
-            clientTUI.printMessage(serverResponse.replace(ERROR, ""));
-            play();
-        } else if (serverResponse.contains(MOVE)) {
-            String[] split = serverResponse.split(DELIMITER, 4);
-            String parameter1 = split[1];
-            int x;
-            char charY = parameter1.charAt(0);
-            int y =  inputToPosition.getPositionFromLetter(charY);
-
-            if (parameter1.length()>2){
-                String StringX = parameter1.substring(1);
-                x = inputToPosition.getPositionFromString(StringX);
-            }else{
-                char charX = parameter1.charAt(1);
-                x = inputToPosition.getPositionFromNumber(charX);
-            }
-            x = x- 1;//array indexing
-            y = y - 1;//array indexing
-
-            char[] letters = split[2].toCharArray();
-            String direction =split[3];
-            try {
-                Board board = game.getCurrentPlayer().playerMove(game.getBoard(),x,y,letters,direction);
-                game.setBoard(board);
-                if (!in.ready()) {
-                    clientTUI.printMessage(game.getBoard().printBoard());
-                    play();
-                } else {
-                    waitMove();
+                if (parameter1.length()>2){
+                    String StringX = parameter1.substring(1);
+                    x = inputToPosition.getPositionFromString(StringX);
+                }else{
+                    char charX = parameter1.charAt(1);
+                    x = inputToPosition.getPositionFromNumber(charX);
                 }
-            } catch (IOException | ServerUnavailableException e) {
-                e.printStackTrace();
+                x = x- 1;//array indexing
+                y = y - 1;//array indexing
+
+                char[] letters = split[2].toCharArray();
+                String direction =split[3];
+                try {
+                    Board board = game.getCurrentPlayer().playerMove(game.getBoard(),x,y,letters,direction);
+                    game.setBoard(board);
+                    if (!in.ready()) {
+                        clientTUI.printMessage(game.getBoard().printBoard());
+                        play();
+                    } else {
+
+                        waitMove();
+                    }
+                } catch (IOException | ServerUnavailableException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (serverResponse.contains(GAMEOVER)) {
+                clientTUI.printMessage(serverResponse);
+
+            } else {
+                System.out.println(serverResponse);
+                throw new ServerUnavailableException("server is not acting correctly");
             }
-        } else if (serverResponse.contains(GAMEOVER)) {
-            clientTUI.printMessage(serverResponse);
-            game = null;
-        } else {
-            System.out.println(serverResponse);
-        }
     }
 
 
