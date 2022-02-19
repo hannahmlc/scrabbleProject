@@ -231,23 +231,27 @@ public class gameClient implements clientProtocol {
                 clientTUI.printMessage(serverResponse.replace(ERROR, ""));
                 play();
             } else if (serverResponse.contains(MOVE)) {
-                String[] split = serverResponse.split(DELIMITER, 4);
-                String parameter1 = split[1];
+                String[] split = serverResponse.split(DELIMITER, 5); //  MOVE ; x ; y ;+ letters ; direction
                 int x;
-                char charY = parameter1.charAt(0);
-                int y =  inputToPosition.getPositionFromLetter(charY);
-
-                if (parameter1.length()>2){
-                    String StringX = parameter1.substring(1);
+                int y;
+                String StringX = split[1];
+                String StringY = split[2];
+                if (StringX.length()>1){
                     x = inputToPosition.getPositionFromString(StringX);
                 }else{
-                    char charX = parameter1.charAt(1);
-                    x = inputToPosition.getPositionFromNumber(charX);
+                    char charX = StringX.charAt(0);
+                    x=  inputToPosition.getPositionFromNumber(charX);
                 }
-                x = x- 1;//array indexing
+                if (StringY.length()>1){
+                    y = inputToPosition.getPositionFromString(StringX);
+                }else{
+                    char charY = StringY.charAt(0);
+                    y =  inputToPosition.getPositionFromNumber(charY);
+                }
+                x = x - 1;//array indexing
                 y = y - 1;//array indexing
-                String letters = split[2];
-                String direction =split[3];
+                String letters = split[3];
+                String direction =split[4];
                 try {
                     Board board = game.getCurrentPlayer().playerMove(game.getBoard(),x,y,letters,direction);
                     game.setBoard(board);
