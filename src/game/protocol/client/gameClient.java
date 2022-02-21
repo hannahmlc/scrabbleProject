@@ -194,7 +194,7 @@ public class gameClient implements clientProtocol {
             if (split[0].equals(MOVE) && split.length >= 3) {
                 clientTUI.printMessage("making move");
                 doMove(line);
-            } else if (split[0].equals(SWAP) && split.length >= 3){
+            } else if (split[0].equals(SWAP) && split.length >= 2){
                 clientTUI.printMessage("swapping letters");
                 sendSwap(line);
             } else {
@@ -251,8 +251,6 @@ public class gameClient implements clientProtocol {
                     char charY = StringY.charAt(0);
                     y =  inputToPosition.getPositionFromNumber(charY);
                 }
-                x = x - 1;//array indexing
-                y = y - 1;//array indexing
                 String letters = split[3];
                 String direction =split[4];
                 try {
@@ -274,6 +272,12 @@ public class gameClient implements clientProtocol {
                 char[] lettersArray = letters.toCharArray();
                 game.getCurrentPlayer().removeLetters(game.getCurrentPlayer().getRack(),lettersArray);
                 game.getCurrentPlayer().addLetters(bagOfTiles);
+                if (!in.ready()) {
+                    clientTUI.printMessage(game.getBoard().printBoard());
+                    play();
+                } else {
+                    waitMove();
+                }
             } else if (serverResponse.contains(GAMEOVER)) {
                 clientTUI.printMessage(serverResponse);
 

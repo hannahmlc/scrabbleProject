@@ -132,15 +132,13 @@ public class gameServer implements serverProtocol, Runnable{
             currentClient = p1;
         } else {
             currentPlayer = p2.getPlayer();
-            currentPlayer = p2.getPlayer();
-            currentClient = p1;
+            currentClient = p2;
         }
         Board board = this.game.getBoard();
        //sendTiles(currentClient);
         board = currentPlayer.playerMove(board,x, y, letters, direction);
-        System.out.println(board.printBoard()); //CHECK IF BOARD IS ACTUALLY changed //todo: GO BACK, AFTER CHECK SERVER RECIFES FORM PLAYER MOVE INGO CORRECTLY
+        System.out.println(board.printBoard()); //CHECK IF BOARD IS ACTUALLY changed
 
-        //todo: GAMEOVER IS BEING IGNORED GAME LAST FOREVER
        //p1.sendMove(x, y,  letters, direction);
         //p2.sendMove(x, y,  letters, direction);
 
@@ -155,14 +153,31 @@ public class gameServer implements serverProtocol, Runnable{
         }
 
     }
+    public void doSwap(String letters, String name) throws IOException {
+        clientHandler[] clients = game.getClientPlayers();
+        clientHandler p1 = clients[0];
+        clientHandler p2 = clients[1];
+        Player currentPlayer;
+        clientHandler currentClient;
+        if (p1.name.equals(name)){
+            currentPlayer = p1.getPlayer();
+            currentClient = p1;
+        } else {
+            currentPlayer = p2.getPlayer();
+            currentClient = p2;
+        }
+        currentPlayer.removeLetters(currentPlayer.getRack(),letters.toCharArray());
+        currentPlayer.addLetters(bag);
+        p1.sendMessage(SWAP+DELIMITER+letters);
+        p2.sendMessage(SWAP+DELIMITER+letters);
+    }
 
     @Override
     public void endGame() throws IOException {
         if(clientsReady.size()>=2){
             clientHandler p1 = clients.get(0);
             clientHandler p2 = clients.get(1);
-            //TODO: finish\
-            // GAMEOVER;<endType(WINNER, DRAW, STOP)>;<names>;<points>!
+            //TODO: GAMEOVER;<endType(WINNER, DRAW, STOP)>;<names>;<points>!
             p1.sendMessage(GAMEOVER);
             p2.sendMessage(GAMEOVER);
         }

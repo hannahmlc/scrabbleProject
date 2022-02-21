@@ -84,7 +84,6 @@ public class clientHandler implements Runnable {
         String parameter1 = null;
         String parameter2 = null;
         String parameter3 = null;
-        //System.out.println("lineee " +message); //TODO: GO BACK AND DLETE
         out.flush();
         if (split.length >= 2) {
             parameter1 = split[1];
@@ -121,8 +120,11 @@ public class clientHandler implements Runnable {
                 }
                 break;
             case SWAP:
-                //TODO: finish swap
-                sendMessage(SWAP);
+                if (parameter1!=null ){
+                    gameServer.doSwap(parameter1, name);
+                }else {
+                    sendMessage(ERROR + DELIMITER + "you've lost your turn");}
+
                 break;
             case MOVE:
                 if (parameter1 != null && parameter2!=null && parameter3!=null) {

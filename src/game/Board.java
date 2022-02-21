@@ -37,7 +37,6 @@ public class Board implements game.interfaces.Board {
         }
     }
 
-    //TODO: make sure get field up/down etc arent out of bounds
     /**
      * @param x - horizontal index on board
      * @param y - diagonal index on board
@@ -206,7 +205,7 @@ public class Board implements game.interfaces.Board {
             for(int i=0;i<letters.length;i++){
                 String letter = String.valueOf(letters[i]);
                 if (getField(x,y)==null && isField(x,y)) {
-                    placeTile(x,y,letter); //TODO: make sure if word doesnt fit letters doesnt stay on board / arent placed
+                    placeTile(x,y,letter);
                 }else{
                         throw new InvalidInputException();//TODO: make sure word isny logner then place from given tile (example, h12 ver, word cant be 10 letters
                 }
