@@ -195,10 +195,12 @@ public class gameClient implements clientProtocol {
                 clientTUI.printMessage("making move");
                 doMove(line);
             } else if (split[0].equals(SWAP) && split.length >= 3){
+                clientTUI.printMessage("swapping letters");
                 sendSwap(line);
             } else {
-                clientTUI.printMessage("ERROR, wrong command");
-                waitMove();
+                clientTUI.printMessage("ERROR, wrong command, try again");
+                game.setCurrentPlayer();
+                play();
             }
              // change player
         }else{
@@ -260,13 +262,18 @@ public class gameClient implements clientProtocol {
                         clientTUI.printMessage(game.getBoard().printBoard());
                         play();
                     } else {
-
                         waitMove();
                     }
                 } catch (IOException | ServerUnavailableException e) {
                     e.printStackTrace();
                 }
 
+            }else if (serverResponse.contains(SWAP)){
+                String[] split = serverResponse.split(DELIMITER, 2); // SWAP; ABC
+                String letters = split[1];
+                char[] lettersArray = letters.toCharArray();
+                game.getCurrentPlayer().removeLetters(game.getCurrentPlayer().getRack(),lettersArray);
+                game.getCurrentPlayer().addLetters(bagOfTiles);
             } else if (serverResponse.contains(GAMEOVER)) {
                 clientTUI.printMessage(serverResponse);
 

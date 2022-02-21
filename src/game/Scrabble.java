@@ -16,7 +16,6 @@ public class Scrabble {
         Player player1;
         Player player2;
 
-//TODO: names must be unique
         if (args.length!=0){
             player1 = new Player(args[0]);
             player2 = new Player(args[1]);

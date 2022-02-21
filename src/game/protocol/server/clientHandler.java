@@ -84,7 +84,7 @@ public class clientHandler implements Runnable {
         String parameter1 = null;
         String parameter2 = null;
         String parameter3 = null;
-        System.out.println("lineee " +message);
+        //System.out.println("lineee " +message); //TODO: GO BACK AND DLETE
         out.flush();
         if (split.length >= 2) {
             parameter1 = split[1];

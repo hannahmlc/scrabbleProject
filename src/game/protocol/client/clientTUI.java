@@ -57,8 +57,12 @@ public class clientTUI {
     }
     public boolean getBoolean(String prompt) {
         printMessage(prompt);
-        boolean answer = Boolean.parseBoolean(new Scanner(System.in).nextLine());
-        return answer;
+        String answer = new Scanner(System.in).nextLine();
+        boolean answerBoolean = false;
+        if (answer.equals("yes") || answer.equals("YES")){
+            answerBoolean = true;
+        }
+        return answerBoolean;
     }
 
     public void handleError(String error) {
