@@ -1,5 +1,5 @@
 # Scrabble
-scrabble game with simple local server/client implemntaion developed as project for one of the modules of univeristy studies.
+scrabble game with simple local server/client implementation developed as project for univeristy course
 
 ## Java version:
 Java SE 11
